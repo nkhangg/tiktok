@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import Header from './components/main/Header';
+import { Main } from './page';
+import { RootState } from './type';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    //redux
+    const { darkMode } = useSelector((state: RootState) => state.app);
+
+    useEffect(() => {
+        const body = document.querySelector('#root');
+        if (!body) return;
+
+        if (darkMode) {
+            body.className = 'bg-black text-white';
+        } else {
+            body.className = 'bg-white text-black';
+        }
+    }, [darkMode]);
+    return (
+        <>
+            <Header />
+            <Main />
+        </>
+    );
+};
 
 export default App;

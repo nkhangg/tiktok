@@ -1,0 +1,10 @@
+export { default as LettersIcon } from './LettersIcon';
+export { default as MessageIcon } from './MessageIcon';
+export { default as HomeIcon } from './HomeIcon';
+export { default as HomeActiveIcon } from './HomeActiveIcon';
+export { default as UserGroupActiveIcon } from './UserGroupActiveIcon';
+export { default as UserGroupIcon } from './UserGroupIcon';
+export { default as LiveIcon } from './LiveIcon';
+export { default as LiveActiveIcon } from './LiveActiveIcon';
+export { default as EffectIcon } from './EffectIcon';
+export { default as UpIcon } from './UpIcon';
