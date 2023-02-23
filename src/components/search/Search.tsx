@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import Tippy from '@tippyjs/react/headless';
 import useDebounce from '../../hook/useDebounce';
-import MiniLoanding from '../MiniLoanding';
+import MiniLoanding from '../loading/MiniLoanding';
 import WrapperSearch from './WrapperSearch';
 import { ResponceAccount } from '../../interface';
 import { apiSearch } from '../../api/app';

@@ -16,12 +16,19 @@ module.exports = {
             },
             textColor: {
                 primary: '#fe2c55',
+                'black-opacity-75': 'rgba(22,24,35,.75)',
+                'white-opacity-12': 'rgba(22,24,35,.12)',
             },
             backgroundColor: {
                 primary: '#fe2c55',
+                'black-opacity-75': 'rgba(22,24,35,.75)',
+                'white-opacity-12': 'rgba(22,24,35,.12)',
             },
             borderColor: {
                 primary: '#fe2c55',
+                'black-opacity-75': 'rgba(22,24,35,.75)',
+                'white-opacity-12': 'rgba(22,24,35,.12)',
+                'white-opacity-2': 'rgba(22,24,35,.2)',
             },
             transformOrigin: {
                 cb: 'center bottom;',

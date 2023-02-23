@@ -2,7 +2,7 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MouseEvent } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../type';
+import { RootState } from '../../type';
 
 interface HeaderMenuProps {
     onClick?: (e: MouseEvent<HTMLElement>) => void;

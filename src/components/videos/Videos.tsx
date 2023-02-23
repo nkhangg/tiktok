@@ -8,6 +8,8 @@ const Videos = () => {
     const [pageNum, setPageNum] = useState(1);
     const { isLoading, isError, results, hasNextPge } = usePosts(pageNum);
 
+    const refVideos = useRef<HTMLDivElement>(null);
+
     const intObserver = useRef<IntersectionObserver>();
     const lastPostRef = useCallback(
         (post: Element) => {
@@ -38,6 +40,10 @@ const Videos = () => {
         return content;
     }, [lastPostRef, results]);
 
+    // handleLoadingEvent
+
+    // use Effect
+
     if (isError)
         return (
             <div id="videos" className="pt-5">
@@ -46,10 +52,10 @@ const Videos = () => {
         );
 
     return (
-        <div id="videos" className="pt-5">
+        <div ref={refVideos} className="pt-5">
             {constents}
             {isLoading && (
-                <div className="w-full h-full flex flex-col items-center justify-end">
+                <div className="w-[692px] h-full flex flex-col items-center justify-center">
                     <Loading />
                 </div>
             )}

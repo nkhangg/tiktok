@@ -45,6 +45,7 @@ export interface ResponceAccount {
 }
 
 export interface Logins {
+    type: string;
     title: string;
     icon: IconDefinition;
 }

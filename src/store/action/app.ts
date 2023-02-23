@@ -4,6 +4,7 @@ export interface InitStateApp {
     isLoggedIn: boolean;
     darkMode: boolean;
     isOpenLogin: boolean;
+    scrollIntView: boolean;
 }
 const initState = {
     isLoggedIn: false,
@@ -12,7 +13,7 @@ const initState = {
     scrollIntView: false,
 };
 
-const appReducer = (state = initState, action: Action<string, string>) => {
+const appReducer = (state: InitStateApp = initState, action: Action<string, string>) => {
     switch (action.type) {
         case actionType.SET_DARK_MODE:
             return {

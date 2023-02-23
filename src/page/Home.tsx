@@ -22,7 +22,7 @@ const Home = () => {
             <div className="w-[356px] h-screen ml-2 relative">
                 <Navbar />
             </div>
-            <div ref={refDiv} className="w-[659px] pt-16">
+            <div ref={refDiv} className="max-w-[720px] pt-16">
                 <Outlet />
                 <ButtonGetApp />
             </div>

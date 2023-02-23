@@ -75,8 +75,8 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
     const options = {
         root: null,
-        rootMargin: '50px',
-        threshold: 0.8,
+        rootMargin: '150px',
+        threshold: 1,
     };
 
     const isVisibile = useElementOnScreen(options, ref);
@@ -96,7 +96,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
     return (
         <div ref={refs} className="py-5 max-w-[692px] border-b border-gray-200 snap-center">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between gap-7 mb-3">
                 <div className="flex items-center">
                     <Img
                         src={user.avatar}
@@ -116,7 +116,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                             </span>
                             <span className="font-[400] text-[15px]">{`${user.first_name} ${user.last_name}`}</span>
                         </span>
-                        <p>{description}</p>
+                        <p className="max-w-[510px]">{description}</p>
                     </div>
                 </div>
 

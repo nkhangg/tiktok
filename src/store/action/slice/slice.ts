@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import { actionType } from '../actionType';
 
 export const slOpenLogin = (flag: boolean = false) => {
@@ -13,4 +14,9 @@ export const slLogout = () => {
 };
 export const slSetScrollIntoView = (flag: boolean) => {
     return { type: actionType.SCROLLINTOVIEW, data: flag };
+};
+
+export const slSetPlayAVideo = (data: RefObject<HTMLVideoElement>) => {
+    console.log(data);
+    return { type: actionType.SET_PLAY_A_VIDEO, data };
 };

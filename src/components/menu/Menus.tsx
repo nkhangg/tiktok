@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import { Settings } from '../../interface';
 import { path } from '../../ultils/path';
-import HeaderMenu from '../HeaderMenu';
+import HeaderMenu from './HeaderMenu';
 import { slLogout } from '../../store/action/slice/slice';
 
 interface MenusProps {

@@ -15,7 +15,7 @@ const Button = ({ children, className, primary, onClick }: ButtonPops) => {
                 primary
                     ? 'bg-[rgb(254,44,85)] text-white rounded-[4px] font-bold'
                     : 'border border-[#e3e3e4] text-[#161823] font-[600]'
-            }  min-w-[100px] max-w-[120px] h-[36px] text-[16px] cursor-pointer`}
+            }  min-w-[100px] max-w-[164px] h-[37px] text-[16px] cursor-pointer`}
         >
             {children}
         </button>

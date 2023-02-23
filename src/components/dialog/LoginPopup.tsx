@@ -8,6 +8,7 @@ import { logins, signups } from '../../ultils/login';
 import { slOpenLogin } from '../../store/action/slice/slice';
 import { Popup } from '.';
 import { title } from '../../ultils/app';
+import { Logins } from '../../interface';
 
 const LoginPopup = () => {
     //redux
@@ -15,8 +16,8 @@ const LoginPopup = () => {
     const dispatch = useDispatch();
 
     // state
-    const [listLogins, setListLogins] = useState(logins);
-    const [isLogin, setIsLogin] = useState(true);
+    const [listLogins, setListLogins] = useState<Logins[]>(logins);
+    const [isLogin, setIsLogin] = useState(false);
 
     // handle funtion
     const handleChageLogin = () => {
