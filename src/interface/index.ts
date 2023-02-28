@@ -47,7 +47,8 @@ export interface ResponceAccount {
 export interface Logins {
     type: string;
     title: string;
-    icon: IconDefinition;
+    icon?: IconDefinition;
+    IconSocial?: React.ForwardRefExoticComponent<IconsProps & React.RefAttributes<any>>;
 }
 
 export interface SliceRedux {
@@ -113,4 +114,13 @@ export interface Video {
     created_at: string;
     updated_at: string;
     user: User;
+}
+
+export interface OptionsRange {
+    reverse?: boolean;
+}
+
+export interface PhoneNumberFormat {
+    country: string;
+    format: string;
 }

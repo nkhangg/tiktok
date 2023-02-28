@@ -43,9 +43,9 @@ const Popup = ({ height, width, slice, children, visible }: PopupProps) => {
                             scale: 0,
                             opacity: 0,
                         }}
-                        className={`bg-white min-w-[483px] ${
+                        className={`bg-white w-[483px] ${
                             width || height ? 'h-' + height + 'w-' + width : ''
-                        } min-h-[60vh] rounded-md shadow-lg pt-12 select-none relative z-[9999]`}
+                        } min-h-70 rounded-md shadow-lg pt-12 select-none relative z-[9999]`}
                     >
                         {children}
                     </motion.div>

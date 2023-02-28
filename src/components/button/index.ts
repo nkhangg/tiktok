@@ -2,3 +2,8 @@ export { default as Button } from './Button';
 export { default as ButtonRouded } from './ButtonRouded';
 export { default as ButtonGetApp } from './ButtonGetApp';
 export { default as ButtonIcon } from './ButtonIcon';
+export { default as ButtonOption } from './ButtonOption';
+export { default as ButtonLogin } from './ButtonLogin';
+export { default as CheckBox } from './CheckBox';
+export { default as ButtonGray } from './ButtonGray';
+export { default as ButtonSendCode } from './ButtonSendCode';

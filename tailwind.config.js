@@ -18,20 +18,48 @@ module.exports = {
                 primary: '#fe2c55',
                 'black-opacity-75': 'rgba(22,24,35,.75)',
                 'white-opacity-12': 'rgba(22,24,35,.12)',
+                'white-opacity-34': 'rgba(22,24,35,.34)',
+                'white-opacity-75': 'rgba(22,24,35,.75)',
+                'white-opacity-90': 'rgba(22,24,35,.90)',
+                'white-opacity-35': 'rgba(22,24,35,.35)',
+                'white-opacity-03': 'rgba(22,35,0.03)',
+                'white-opacity-50': 'rgba(22,24,35,0.5)',
+                'white-opacity': 'rgb(22, 24, 35)',
+                error: 'rgb(255,76,58)',
+                sucess: 'rgb(11,224,155)',
             },
             backgroundColor: {
                 primary: '#fe2c55',
                 'black-opacity-75': 'rgba(22,24,35,.75)',
                 'white-opacity-12': 'rgba(22,24,35,.12)',
+                'white-opacity-2': 'rgba(22,24,35,.2)',
+                'white-opacity-06': 'rgba(22,24,35,.06)',
+                'white-opacity-03': 'rgba(22,24,35,.03)',
             },
             borderColor: {
                 primary: '#fe2c55',
                 'black-opacity-75': 'rgba(22,24,35,.75)',
                 'white-opacity-12': 'rgba(22,24,35,.12)',
                 'white-opacity-2': 'rgba(22,24,35,.2)',
+                'white-opacity-06': 'rgba(22,24,35,.06)',
+                error: 'rgb(255,76,58)',
+                sucess: 'rgb(11,224,155)',
             },
+
             transformOrigin: {
                 cb: 'center bottom;',
+            },
+            width: {
+                120: '120px',
+            },
+            fontSize: {
+                16: '16px',
+            },
+            minHeight: {
+                70: '70vh',
+            },
+            caretColor: {
+                primary: '#fe2c55',
             },
         },
     },

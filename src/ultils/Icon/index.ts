@@ -8,3 +8,14 @@ export { default as LiveIcon } from './LiveIcon';
 export { default as LiveActiveIcon } from './LiveActiveIcon';
 export { default as EffectIcon } from './EffectIcon';
 export { default as UpIcon } from './UpIcon';
+export { default as EysOff } from './EysOff';
+export { default as EysOn } from './EysOn';
+export { default as Error } from './Error';
+
+export { default as Facebook } from './social/Facebook';
+export { default as Apple } from './social/Apple';
+export { default as Google } from './social/Google';
+export { default as Instagram } from './social/Instagram';
+export { default as KakaoTalk } from './social/KakaoTalk';
+export { default as Line } from './social/Line';
+export { default as Twitter } from './social/Twitter';

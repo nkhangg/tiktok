@@ -10,13 +10,13 @@ body {
 }
 
 body::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
 }
 
 /* Track */
 body::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 /* Handle */

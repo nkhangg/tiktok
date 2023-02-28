@@ -17,6 +17,9 @@ export const slSetScrollIntoView = (flag: boolean) => {
 };
 
 export const slSetPlayAVideo = (data: RefObject<HTMLVideoElement>) => {
-    console.log(data);
     return { type: actionType.SET_PLAY_A_VIDEO, data };
+};
+
+export const slSetSignWithUsername = (flag: boolean) => {
+    return { type: actionType.SIGN_WITH_USERNAME, data: flag };
 };
