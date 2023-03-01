@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Tippy from '@tippyjs/react/headless';
 import Scrollbars from 'react-custom-scrollbars-2';
+import { useDispatch } from 'react-redux';
+import { slSetBirth } from '../../store/action/slice/slice';
 
 interface ContentProps {
     content: string | number;
@@ -13,15 +15,19 @@ interface ContentProps {
 interface ButtonOptionProps {
     initContent: string;
     listContent: string[] | number[];
+    type: 'month' | 'day' | 'year';
 }
 
-const ButtonOption = ({ initContent, listContent }: ButtonOptionProps) => {
+const ButtonOption = ({ initContent, listContent, type }: ButtonOptionProps) => {
     const [content, setContent] = useState<ContentProps>({ content: initContent, state: false });
     const [hide, setHide] = useState(false);
+
+    const dispatch = useDispatch();
 
     // handle funtion
     const handleSelectOption = (option: string | number) => {
         setContent({ content: option, state: true });
+        dispatch(slSetBirth(option, type));
         setHide(false);
     };
 

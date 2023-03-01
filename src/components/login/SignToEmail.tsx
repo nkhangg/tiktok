@@ -4,9 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonGray, ButtonSendCode, CheckBox } from '../button';
 import { Input } from '../input';
 import { isCode, isEmail, passwordCheckCondition, passwordCheckLenght } from '../../ultils/validation';
+import { apiRegister } from '../../api/users';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../type';
 
 const SignToPhone = () => {
     const [showCondition, setShowCondition] = useState(false);
+
+    // redux
+    const { month, day, year } = useSelector((state: RootState) => state.login);
 
     // value state
     const [email, setEmail] = useState('');
@@ -61,10 +67,39 @@ const SignToPhone = () => {
     }, [password, email]);
 
     const handleReadySendcode = useCallback(() => {
-        setReadySendocode(isCode(code));
-    }, [code]);
+        if (!day || !month || !year) {
+            setReadySendocode(false);
+            return;
+        }
 
-    // handle email
+        if (password === '' || email === '') {
+            setReadySendocode(false);
+            return;
+        }
+
+        if (!errorEmail() || !errorPassword()) {
+            setReadySendocode(false);
+            return;
+        }
+
+        if (!errorForm.errorEmail && !errorForm.errorPassword) {
+            setReadySendocode(true);
+        } else {
+            setReadySendocode(false);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [email, password, errorForm.errorEmail, errorForm.errorPassword, day, month, year]);
+
+    // handle sign
+
+    const handleSign = async () => {
+        if (errorForm.errorEmail && errorForm.errorPassword) return;
+
+        const responce = await apiRegister(email, password);
+
+        console.log(responce);
+    };
 
     // use Effect
 
@@ -132,7 +167,7 @@ const SignToPhone = () => {
             )}
             <ButtonSendCode ready={readySendocode} value={code} setValue={setCode} />
             <CheckBox checked={checked} setChecked={setChecked} />
-            <ButtonGray title="Next" width="100%" />
+            <ButtonGray onClick={handleSign} title="Next" width="100%" />
         </div>
     );
 };

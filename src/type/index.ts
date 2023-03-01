@@ -10,4 +10,5 @@ export type RootState = ReturnType<typeof store.getState>;
 export type CustomButton = string | ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
 export type apiSearchType = (value: string, type?: string) => Promise<ResponceAccount[]>;
 export type apiGetUsersType = (page?: number, limit?: number) => Promise<ResponceAccount[]>;
+export type apiRegisterType = (email: string, password: string) => Promise<ResponceAccount[]>;
 export type apiGetVideo = (page?: number, option?: {}) => Promise<Video[]>;

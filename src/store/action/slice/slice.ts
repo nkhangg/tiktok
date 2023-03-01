@@ -23,3 +23,19 @@ export const slSetPlayAVideo = (data: RefObject<HTMLVideoElement>) => {
 export const slSetSignWithUsername = (flag: boolean) => {
     return { type: actionType.SIGN_WITH_USERNAME, data: flag };
 };
+
+export const slSetBirth = (value: string | number, type: 'month' | 'day' | 'year') => {
+    switch (type) {
+        case 'month': {
+            return { type: actionType.SET_MONTH, data: value };
+        }
+
+        case 'day': {
+            return { type: actionType.SET_DAY, data: value };
+        }
+
+        case 'year': {
+            return { type: actionType.SET_YEAR, data: value };
+        }
+    }
+};

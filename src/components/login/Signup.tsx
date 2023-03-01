@@ -23,9 +23,13 @@ const Signup = () => {
                     <h4 className="font-semibold text-16 mb-1 text-white-opacity">When’s your birthday?</h4>
 
                     <div className="flex gap-2">
-                        <ButtonOption initContent="Month" listContent={months} />
-                        <ButtonOption initContent="Day" listContent={range(30)} />
-                        <ButtonOption initContent="Year" listContent={range(new Date().getFullYear(), 1990)} />
+                        <ButtonOption type="month" initContent="Month" listContent={months} />
+                        <ButtonOption type="day" initContent="Day" listContent={range(30)} />
+                        <ButtonOption
+                            type="year"
+                            initContent="Year"
+                            listContent={range(new Date().getFullYear(), 1990)}
+                        />
                     </div>
                     <span className="text-sm text-white-opacity-50 leading-5 mb-4">
                         Your birthday won't be shown publicly.

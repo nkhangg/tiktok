@@ -21,9 +21,9 @@ const ButtonGray = ({
         <button
             onClick={onClick}
             className={`w-[${width}] h-11 px-3  rounded-sm 
-            flex items-center 
+            flex items-center bg-[rgba(22,24,35,.06)]
             ${border ? 'border border-white-opacity-12' : ''} justify-center
-            ${ready ? 'bg-primary text-white cursor-pointer' : 'bg-[rgba(22,24,35,.06)] text-white-opacity-34'}
+            ${ready ? 'text-white-opacity cursor-pointer' : ' text-white-opacity-34'}
             ${ready ? 'cursor-pointer' : cusor}
             `}
         >
