@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import React, { forwardRef, ForwardedRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../type';
 import { Button } from '../button';
 import { Img } from '../image';
@@ -23,10 +24,12 @@ const SuggestedAcount = forwardRef(
         { image, nickname, tick, lastname, firstname, likeCount, follwers, isFollow }: SuggestedAcountProps,
         ref: ForwardedRef<any>,
     ) => {
-        const { darkMode } = useSelector((state: RootState) => state.app);
+        const { darkMode, profileMode } = useSelector((state: RootState) => state.app);
+        const navigate = useNavigate();
         return (
-            <div>
+            <div onClick={() => navigate(`/@${nickname}`)}>
                 <Tippy
+                    visible={profileMode ? false : undefined}
                     interactive
                     delay={[800, 0]}
                     offset={[0, 10]}
@@ -91,7 +94,7 @@ const SuggestedAcount = forwardRef(
                                     </span>
                                 )}
                             </span>
-                            <span className="font-[400] text-[12px]">{`${firstname} ${lastname}`}</span>
+                            <span className="font-[400] text-[12px] truncate ">{`${firstname} ${lastname}`}</span>
                         </div>
                     </div>
                 </Tippy>

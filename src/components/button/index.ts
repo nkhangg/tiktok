@@ -7,3 +7,6 @@ export { default as ButtonLogin } from './ButtonLogin';
 export { default as CheckBox } from './CheckBox';
 export { default as ButtonGray } from './ButtonGray';
 export { default as ButtonSendCode } from './ButtonSendCode';
+export { default as ShareButton } from './ShareButton';
+export { default as ButtonOptionProfile } from './ButtonOptionProfile';
+export { default as TogleFollowButton } from './TogleFollowButton';

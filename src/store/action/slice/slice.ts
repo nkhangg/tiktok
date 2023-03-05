@@ -1,12 +1,20 @@
 import { RefObject } from 'react';
+import { User } from '../../../interface';
 import { actionType } from '../actionType';
 
 export const slOpenLogin = (flag: boolean = false) => {
     return { type: actionType.SET_STATE_LOGIN, data: flag };
 };
 
+export const slOpenEdit = (flag: boolean = false) => {
+    return { type: actionType.SET_OPEN_EDIT, data: flag };
+};
+
 export const slSetDarkMode = (flag: boolean) => {
     return { type: actionType.SET_DARK_MODE, data: flag };
+};
+export const slSetProfileMode = (flag: boolean = false) => {
+    return { type: actionType.SET_PROFILE_MODE, data: flag };
 };
 
 export const slLogout = () => {
@@ -20,8 +28,18 @@ export const slSetPlayAVideo = (data: RefObject<HTMLVideoElement>) => {
     return { type: actionType.SET_PLAY_A_VIDEO, data };
 };
 
-export const slSetSignWithUsername = (flag: boolean) => {
-    return { type: actionType.SIGN_WITH_USERNAME, data: flag };
+export const slSetTypeMode = (data: string | null) => {
+    return { type: actionType.SIGN_WITH_USERNAME, data };
+};
+
+export const slSetIsLogin = (flag: boolean) => {
+    return { type: actionType.SET_ISLOGIN, data: flag };
+};
+export const slSetToken = (data: String) => {
+    return { type: actionType.SET_TOKEN, data };
+};
+export const slSetImageUser = (data: { image: string; to: string }) => {
+    return { type: actionType.SET_INIT_USER, data };
 };
 
 export const slSetBirth = (value: string | number, type: 'month' | 'day' | 'year') => {
@@ -38,4 +56,18 @@ export const slSetBirth = (value: string | number, type: 'month' | 'day' | 'year
             return { type: actionType.SET_YEAR, data: value };
         }
     }
+};
+
+export const slSetUser = (data: User | null) => {
+    return {
+        type: actionType.SET_USER,
+        data,
+    };
+};
+
+export const slSetLogin = (data: boolean) => {
+    return {
+        type: actionType.SET_LOGIN,
+        data,
+    };
 };

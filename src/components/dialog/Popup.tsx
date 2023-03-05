@@ -9,9 +9,10 @@ interface PopupProps {
     slice: (flag?: boolean) => SliceRedux;
     visible: boolean;
     children: ReactNode;
+    full?: boolean;
 }
 
-const Popup = ({ height, width, slice, children, visible }: PopupProps) => {
+const Popup = ({ height, width, slice, children, visible, full = false }: PopupProps) => {
     //redux
     const dispatch = useDispatch();
     return (
@@ -43,9 +44,11 @@ const Popup = ({ height, width, slice, children, visible }: PopupProps) => {
                             scale: 0,
                             opacity: 0,
                         }}
-                        className={`bg-white w-[483px] ${
-                            width || height ? 'h-' + height + 'w-' + width : ''
-                        } min-h-70 rounded-md shadow-lg pt-12 select-none relative z-[9999]`}
+                        className={`bg-white  
+                        ${width ? 'w-' + width : ''} 
+                        ${height ? 'h-' + height : ''}
+                        ${full ? '' : 'pt-12'}
+                        min-h-70 rounded-md shadow-lg  select-none relative z-[9999]`}
                     >
                         {children}
                     </motion.div>

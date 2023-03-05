@@ -2,13 +2,17 @@ import { Action } from '../../interface';
 import { actionType } from './actionType';
 
 export interface InitStateApp {
-    signUsername: boolean;
+    typeMode: string | null;
+    loginUsername: boolean;
+    isLogin: boolean;
     month: string | null;
     day: string | null;
     year: string | null;
 }
 const initState = {
-    signUsername: false,
+    typeMode: null,
+    loginUsername: false,
+    isLogin: false,
     month: null,
     day: null,
     year: null,
@@ -19,7 +23,17 @@ const loginReducer = (state: InitStateApp = initState, action: Action<string, st
         case actionType.SIGN_WITH_USERNAME:
             return {
                 ...state,
-                signUsername: action.data,
+                typeMode: action.data,
+            };
+        case actionType.LOGIN_WITH_USERNAME:
+            return {
+                ...state,
+                loginUsername: action.data,
+            };
+        case actionType.SET_ISLOGIN:
+            return {
+                ...state,
+                isLogin: action.data,
             };
 
         case actionType.SET_MONTH: {

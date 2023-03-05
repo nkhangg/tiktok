@@ -3,16 +3,20 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ButtonGray, ButtonSendCode, CheckBox } from '../button';
 import { Input } from '../input';
-import { isCode, isEmail, passwordCheckCondition, passwordCheckLenght } from '../../ultils/validation';
+import { isEmail, passwordCheckCondition, passwordCheckLenght } from '../../ultils/validation';
 import { apiRegister } from '../../api/users';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
+import { slOpenLogin, slSetLogin, slSetUser } from '../../store/action/slice/slice';
 
 const SignToPhone = () => {
     const [showCondition, setShowCondition] = useState(false);
 
     // redux
     const { month, day, year } = useSelector((state: RootState) => state.login);
+    // const { user } = useSelector((state: RootState) => state.app);
+
+    const dispatch = useDispatch();
 
     // value state
     const [email, setEmail] = useState('');
@@ -94,11 +98,18 @@ const SignToPhone = () => {
     // handle sign
 
     const handleSign = async () => {
-        if (errorForm.errorEmail && errorForm.errorPassword) return;
+        if (!readySendocode) return;
 
-        const responce = await apiRegister(email, password);
+        const res = await apiRegister(email, password);
 
-        console.log(responce);
+        if (res) {
+            dispatch(slSetUser(res));
+            dispatch(slSetLogin(true));
+            dispatch(slOpenLogin());
+        } else {
+            dispatch(slSetUser(null));
+            dispatch(slSetLogin(false));
+        }
     };
 
     // use Effect
@@ -167,7 +178,7 @@ const SignToPhone = () => {
             )}
             <ButtonSendCode ready={readySendocode} value={code} setValue={setCode} />
             <CheckBox checked={checked} setChecked={setChecked} />
-            <ButtonGray onClick={handleSign} title="Next" width="100%" />
+            <ButtonGray ready={readySendocode} onClick={handleSign} title="Next" width="100%" />
         </div>
     );
 };

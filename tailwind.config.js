@@ -35,6 +35,7 @@ module.exports = {
                 'white-opacity-2': 'rgba(22,24,35,.2)',
                 'white-opacity-06': 'rgba(22,24,35,.06)',
                 'white-opacity-03': 'rgba(22,24,35,.03)',
+                'white-opacity': 'rgb(22, 24, 35)',
             },
             borderColor: {
                 primary: '#fe2c55',
@@ -42,6 +43,7 @@ module.exports = {
                 'white-opacity-12': 'rgba(22,24,35,.12)',
                 'white-opacity-2': 'rgba(22,24,35,.2)',
                 'white-opacity-06': 'rgba(22,24,35,.06)',
+                'white-opacity': 'rgb(22, 24, 35)',
                 error: 'rgb(255,76,58)',
                 sucess: 'rgb(11,224,155)',
             },
@@ -51,6 +53,8 @@ module.exports = {
             },
             width: {
                 120: '120px',
+                'nav-profile': '232px',
+                nav: '356px',
             },
             fontSize: {
                 16: '16px',

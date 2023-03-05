@@ -1,65 +1,92 @@
 import { faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons';
-import { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
-import { logins, signups, moreSignups } from '../../ultils/login';
-import { slOpenLogin, slSetSignWithUsername } from '../../store/action/slice/slice';
-import { SelectionLogin, Signup } from '../login';
-import { Logins } from '../../interface';
+import { slOpenLogin, slSetIsLogin, slSetTypeMode } from '../../store/action/slice/slice';
+import { ForgotPassword, Login, SelectionLogin, Signup } from '../login';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { title } from '../../ultils/app';
 import Popup from './Popup';
 
 const LoginPopup = () => {
+    // state
+    const [list, setList] = useState<JSX.Element[]>([<SelectionLogin />]);
+
+    // variable
+    const lastList = list[list.length - 1];
+
     //redux
     const { isOpenLogin } = useSelector((state: RootState) => state.app);
-    const { signUsername } = useSelector((state: RootState) => state.login);
+    const { typeMode, isLogin } = useSelector((state: RootState) => state.login);
     const dispatch = useDispatch();
 
-    // state
-    const [listLogins, setListLogins] = useState<Logins[]>(logins);
-    const [isLogin, setIsLogin] = useState(false);
-
     // handle funtion
-    const handleChageLogin = () => {
-        setIsLogin((prev) => !prev);
-        dispatch(slSetSignWithUsername(false));
-        if (isLogin) {
-            setListLogins(logins);
-        } else {
-            setListLogins(signups);
-        }
-    };
-
-    // handle funtion
-    const handleMoreListSign = useCallback(() => {
-        setListLogins([...listLogins, ...moreSignups]);
-    }, [listLogins]);
 
     const handleHiddePopup = (e: MouseEvent<HTMLElement>) => {
         dispatch(slOpenLogin());
         e.stopPropagation();
     };
 
+    const handleChageMode = () => {
+        if (list.length > 1) {
+            setList([<SelectionLogin />]);
+            return;
+        }
+
+        if (isLogin) {
+            dispatch(slSetIsLogin(false));
+        } else {
+            dispatch(slSetIsLogin(true));
+        }
+    };
+
+    const handleBack = () => {
+        setList(list.slice(0, list.length - 1));
+    };
+
+    const setNewList = (item: JSX.Element) => {
+        setList([...list, item]);
+        dispatch(slSetTypeMode(null));
+    };
+
     // use Effect
 
     useEffect(() => {
-        // dispatch a action to back to list login or sign
-        dispatch(slSetSignWithUsername(false));
+        setList([<SelectionLogin />]);
 
         if (isOpenLogin) {
             document.title = title.login;
             document.body.style.overflow = 'hidden';
         } else {
             document.title = title.home;
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'overlay';
         }
     }, [isOpenLogin, dispatch]);
 
+    useEffect(() => {
+        switch (typeMode) {
+            case 'suPhone': {
+                setNewList(<Signup />);
+                break;
+            }
+            case 'lgphone': {
+                setNewList(<Login />);
+                break;
+            }
+            case 'forgotPassword': {
+                setNewList(<ForgotPassword />);
+                break;
+            }
+            default:
+                break;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [typeMode]);
+
     return (
-        <Popup slice={slOpenLogin} visible={isOpenLogin}>
-            <div className="w-full h-[70vh]  flex flex-col justify-between">
+        <Popup width="" slice={slOpenLogin} visible={isOpenLogin}>
+            <div className="w-[483px] h-[70vh]  flex flex-col justify-between">
                 <div className="flex-1">
                     <Scrollbars
                         style={{
@@ -68,12 +95,7 @@ const LoginPopup = () => {
                         }}
                         autoHide
                     >
-                        {!signUsername ? (
-                            <SelectionLogin onClickMore={handleMoreListSign} listItem={listLogins} isLogin={isLogin} />
-                        ) : (
-                            ''
-                        )}
-                        {signUsername ? <Signup /> : ''}
+                        {lastList}
                     </Scrollbars>
                 </div>
 
@@ -91,9 +113,9 @@ const LoginPopup = () => {
                     className="h-16 flex items-center justify-center border-t
                  border-t-white-opacity-12 gap-2 text-[15px]"
                 >
-                    <span>{isLogin ? "Don't have an account ?" : 'Already have an account ?'}</span>
+                    <span>{isLogin ? 'Already have an account ?' : "Don't have an account ?"}</span>
                     <span
-                        onClick={handleChageLogin.bind(this)}
+                        onClick={handleChageMode.bind(this)}
                         className="text-primary font-bold cursor-pointer hover:underline"
                     >
                         {isLogin ? 'Log in' : 'Sign up'}
@@ -109,11 +131,9 @@ const LoginPopup = () => {
                 <FontAwesomeIcon icon={faClose} />
             </div>
 
-            {signUsername ? (
+            {list.length > 1 ? (
                 <span
-                    onClick={() => {
-                        dispatch(slSetSignWithUsername(false));
-                    }}
+                    onClick={handleBack.bind(this)}
                     className="absolute top-4 left-4 text-xl cursor-pointer text-gray-500"
                 >
                     <FontAwesomeIcon icon={faChevronLeft} />

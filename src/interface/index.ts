@@ -75,6 +75,11 @@ export interface Discover {
     title: string;
 }
 
+export interface ResponceUser {
+    data: User;
+    meta: { token: string };
+}
+
 export interface User {
     id: number;
     first_name: string;
@@ -87,11 +92,17 @@ export interface User {
     followings_count: number;
     followers_count: number;
     likes_count: number;
-    website_url: string;
-    facebook_url: string;
-    youtube_url: string;
-    twitter_url: string;
-    instagram_url: string;
+    website_url?: string;
+    facebook_url?: string;
+    youtube_url?: string;
+    twitter_url?: string;
+    instagram_url?: string;
+    email_verified_at?: string;
+    created_at?: string;
+    updated_at?: string;
+    // meta?: {
+    //     token: string;
+    // };
 }
 
 export interface Video {
@@ -116,6 +127,29 @@ export interface Video {
     user: User;
 }
 
+export interface ProfileInterface {
+    id: number;
+    first_name: string;
+    last_name: string;
+    nickname: string;
+    avatar: string;
+    bio: string;
+    tick: boolean;
+    is_followed: boolean;
+    followings_count: number;
+    followers_count: number;
+    likes_count: number;
+    website_url?: string;
+    facebook_url?: string;
+    youtube_url?: string;
+    twitter_url?: string;
+    instagram_url?: string;
+    email_verified_at?: string;
+    created_at?: string;
+    updated_at?: string;
+    videos: Video[];
+}
+
 export interface OptionsRange {
     reverse?: boolean;
 }
@@ -123,4 +157,22 @@ export interface OptionsRange {
 export interface PhoneNumberFormat {
     country: string;
     format: string;
+}
+
+export interface Active {
+    value: string;
+    initBorder: number;
+    left: number;
+}
+
+export interface ResponceCheckingUsername {
+    message: string;
+    status_code: number;
+}
+
+export interface UpdateProps {
+    firstname: string;
+    lastname: string;
+    avatar?: File;
+    bio: string;
 }

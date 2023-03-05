@@ -1,7 +1,23 @@
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { Logins } from '../interface';
-import { Apple, Facebook, Google, Instagram, KakaoTalk, Line, Twitter } from './Icon';
+import {
+    Apple,
+    CoppyLink,
+    Email,
+    Embed,
+    Facebook,
+    Google,
+    Instagram,
+    KakaoTalk,
+    Line,
+    LinkedIn,
+    Pinterest,
+    Reddit,
+    Telegram,
+    Twitter,
+    WhatsApp,
+} from './Icon';
 
 export const logins: Logins[] = [
     { type: 'lgQr', title: 'Use QR code', icon: faQrcode },
@@ -13,6 +29,20 @@ export const logins: Logins[] = [
     { type: 'lgKakaoTalk', title: 'Continue with KakaoTalk', IconSocial: KakaoTalk },
     { type: 'lgApple', title: 'Continue with Apple', IconSocial: Apple },
     { type: 'lgInstagram', title: 'Continue with Instagram', IconSocial: Instagram },
+];
+
+export const shares: Logins[] = [
+    { type: 'sEmbed', title: 'Embed', IconSocial: Embed },
+    { type: 'sWhatsApp', title: 'Share to WhatsApp', IconSocial: WhatsApp },
+    { type: 'sCoppyLink', title: 'Copy link ', IconSocial: CoppyLink },
+    { type: 'sLinkedIn', title: 'Share to LinkedIn', IconSocial: LinkedIn },
+    { type: 'sReddit', title: 'Share to Reddit', IconSocial: Reddit },
+];
+
+export const shareMore: Logins[] = [
+    { type: 'sTelegram', title: 'Share to Telegram', IconSocial: Telegram },
+    { type: 'sEmail', title: 'Share to Email', IconSocial: Email },
+    { type: 'sPinterest', title: 'Share to Pinterest', IconSocial: Pinterest },
 ];
 
 export const signups: Logins[] = [

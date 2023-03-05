@@ -4,7 +4,7 @@ import Discover from './Discover';
 
 const Discovers = () => {
     return (
-        <div className="p-2 flex flex-wrap pt-4 pb-0">
+        <div className="p-2 flex flex-wrap pt-4 pb-0 text-white-opacity-50">
             {discover.map((item) => {
                 return <Discover key={item.title} title={item.title} music={item.music} hastag={item.hastag} />;
             })}

@@ -4,7 +4,7 @@ import { linkNonImage } from '../../ultils/links';
 interface ImageProps {
     className?: string;
     alt: string;
-    src: string;
+    src: string | null;
 }
 
 const Img = ({ className, alt, src }: ImageProps) => {
@@ -14,7 +14,7 @@ const Img = ({ className, alt, src }: ImageProps) => {
         setFallback(linkNonImage);
     };
 
-    return <img onError={handleError} className={className} alt={alt} src={fallback} />;
+    return <img onError={handleError.bind(this)} className={className} alt={alt} src={fallback ? fallback : ''} />;
 };
 
 export default Img;

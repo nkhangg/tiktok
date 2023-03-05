@@ -9,6 +9,7 @@ import {
     faCoins,
     faGear,
     faSignOut,
+    faLock,
 } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 
@@ -41,18 +42,21 @@ export const settings: Settings[] = [
 
 export const userMenu: Settings[] = [
     {
+        type: 'profile',
         icon: faUser,
         title: 'View profile',
         to: '/@hoaa',
     },
 
     {
+        type: 'coins',
         icon: faCoins,
         title: 'Get coins',
         to: '/coins',
     },
 
     {
+        type: 'settings',
         icon: faGear,
         title: 'Settings',
         to: '/settings',
@@ -63,5 +67,15 @@ export const userMenu: Settings[] = [
         icon: faSignOut,
         title: 'Log out',
         separate: true,
+    },
+];
+
+export const listTabs = [
+    {
+        title: 'Videos',
+    },
+    {
+        title: 'Liked',
+        icon: faLock,
     },
 ];

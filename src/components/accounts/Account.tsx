@@ -1,5 +1,7 @@
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import { Img } from '../image';
 
 interface AccountProps {
     nickname: string;
@@ -9,10 +11,15 @@ interface AccountProps {
 }
 
 const Account = ({ nickname, fullname, image, tick }: AccountProps) => {
+    const navigate = useNavigate();
+
     return (
-        <div className="h-[60px] px-4 py-[9px] flex items-center cursor-pointer gap-4 hover:bg-[rgba(22,24,35,0.03)] select-none">
+        <div
+            onClick={() => navigate(`/@${nickname}`)}
+            className="h-[60px] px-4 py-[9px] flex items-center cursor-pointer gap-4 hover:bg-[rgba(22,24,35,0.03)] select-none"
+        >
             <div className="overflow-hidden h-[40px] w-[40px] rounded-full">
-                <img className="w-full h-full object-cover" src={image} alt={nickname} />
+                <Img className="w-full h-full object-cover" src={image} alt={nickname} />
             </div>
             <div className="flex flex-col">
                 <span className="flex gap-2 text-[16px] font-[600]">

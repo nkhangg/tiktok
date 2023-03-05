@@ -3,6 +3,7 @@ import { faPause, faPlay, faVolumeLow, faVolumeMute, faCheckCircle } from '@fort
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
 import React, { useEffect, useRef, useState, forwardRef, ForwardedRef, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useElementOnScreen from '../../hook/useElementOnScreen';
 import { Video as VideoInterface } from '../../interface';
 import { secondsToMinute } from '../../ultils/funtion';
@@ -16,6 +17,7 @@ interface VideoProps {
 const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     //ref
     const ref = useRef<HTMLVideoElement>(null);
+    const navigate = useNavigate();
 
     // variable
     const { file_url, description, likes_count, comments_count, shares_count, user } = data;
@@ -75,7 +77,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
     const options = {
         root: null,
-        rootMargin: '150px',
+        rootMargin: '100px',
         threshold: 1,
     };
 
@@ -107,7 +109,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                     <div className="ml-3">
                         <span className="flex items-center gap-2 cursor-pointer">
                             <span className="font-bold hover:underline flex gap-1 items-center">
-                                <span>{user.nickname}</span>
+                                <span onClick={() => navigate(`/@${user.nickname}`)}>{user.nickname}</span>
                                 {user.tick && (
                                     <span className="text-[rgb(32,213,236)] text-sm">
                                         <FontAwesomeIcon icon={faCheckCircle} />

@@ -50,9 +50,6 @@ const Search = () => {
         if (valueDebounce.trim() === '') return;
 
         setLoading(true);
-        // const responce = await axios.get(
-        //     `https://tiktok.fullstack.edu.vn/api/users/search?q=${valueDebounce}&type=less`,
-        // );
 
         const responce = await apiSearch(valueDebounce);
 

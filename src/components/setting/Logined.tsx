@@ -10,15 +10,26 @@ import Menus from '../menu/Menus';
 import { userMenu } from '../../ultils/setting';
 import Tippy from '@tippyjs/react';
 import { LettersIcon, MessageIcon } from '../../ultils/Icon';
+import { Img } from '../image';
 
 const Logined = () => {
     //state
     const [isHide, setIsHide] = useState(false);
 
     //redux
-    const { darkMode } = useSelector((state: RootState) => state.app);
+    const { darkMode, initUser } = useSelector((state: RootState) => state.app);
 
     //handle funtion
+
+    const setLinkPorfileForList = () => {
+        return userMenu.map((item) => {
+            if (item.type === 'profile') {
+                item.to = '/@' + initUser.to;
+            }
+
+            return item;
+        });
+    };
 
     return (
         <div className="flex gap-6 items-center">
@@ -45,16 +56,12 @@ const Logined = () => {
                 offset={[8, 20]}
                 render={(attrs) => (
                     <div {...attrs}>
-                        <Menus data={userMenu} isHide={isHide} />
+                        <Menus data={setLinkPorfileForList()} isHide={isHide} />
                     </div>
                 )}
             >
                 <div className="h-8 w-8 rounded-full overflow-hidden cursor-pointer">
-                    <img
-                        className="h-full w-full object-cover"
-                        src={'https://i.pinimg.com/736x/1a/d2/52/1ad252bf85cf4122440a8cedcfaac306.jpg'}
-                        alt="avartar"
-                    />
+                    <Img className="h-full w-full object-cover" src={initUser.image} alt="avartar" />
                 </div>
             </TippyHeadLess>
         </div>

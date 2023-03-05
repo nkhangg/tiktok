@@ -7,7 +7,11 @@ import { UpIcon } from '../../ultils/Icon';
 import { useDispatch } from 'react-redux';
 import { slSetScrollIntoView } from '../../store/action/slice/slice';
 
-const ButtonGetApp = () => {
+interface ButtonGetAppProps {
+    scrollTop?: number;
+}
+
+const ButtonGetApp = ({ scrollTop }: ButtonGetAppProps) => {
     const [openPopup, setOpenPopup] = useState(false);
     const [hideUpIcon, setHideUpIcon] = useState(false);
     const dispatch = useDispatch();
@@ -19,6 +23,19 @@ const ButtonGetApp = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    useEffect(() => {
+        if (!scrollTop) {
+            setHideUpIcon(false);
+            return;
+        }
+
+        if (scrollTop > 0) {
+            setHideUpIcon(true);
+        } else {
+            setHideUpIcon(false);
+        }
+    }, [scrollTop]);
 
     // handle funtion
 
@@ -45,12 +62,12 @@ const ButtonGetApp = () => {
     };
 
     return (
-        <div className="fixed right-4 bottom-2 bg-white">
+        <div className="fixed right-4 bottom-2">
             <div
                 style={{
                     transform: `${hideUpIcon ? '' : 'translateY(50%)'}`,
                 }}
-                className="flex items-end gap-2 flex-col bg-white transition-all ease-in duration-200 delay-200"
+                className="flex items-end gap-2 flex-col transition-all ease-in duration-200 delay-200"
             >
                 <div
                     onClick={handleOpen}
@@ -106,7 +123,7 @@ const ButtonGetApp = () => {
                 <button
                     onClick={handleScrollIntoViews}
                     className="bg-primary h-8 w-8 flex items-center justify-center 
-                rounded-full text-white mt-2"
+                    rounded-full text-white mt-2"
                 >
                     <UpIcon />
                 </button>

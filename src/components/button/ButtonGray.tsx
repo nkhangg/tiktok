@@ -6,6 +6,7 @@ interface ButtonGrayProps {
     cusor?: 'cursor-pointer' | 'cursor-default' | 'cursor-not-allowed';
     border?: boolean;
     ready?: boolean;
+    className?: string;
     onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
@@ -15,6 +16,7 @@ const ButtonGray = ({
     cusor = 'cursor-pointer',
     border = false,
     ready,
+    className,
     onClick,
 }: ButtonGrayProps) => {
     return (
@@ -22,6 +24,7 @@ const ButtonGray = ({
             onClick={onClick}
             className={`w-[${width}] h-11 px-3  rounded-sm 
             flex items-center bg-[rgba(22,24,35,.06)]
+            ${className ? className : ''}
             ${border ? 'border border-white-opacity-12' : ''} justify-center
             ${ready ? 'text-white-opacity cursor-pointer' : ' text-white-opacity-34'}
             ${ready ? 'cursor-pointer' : cusor}

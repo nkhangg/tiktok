@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { IconsProps } from '../../interface';
-import { slSetSignWithUsername } from '../../store/action/slice/slice';
+import { slSetTypeMode } from '../../store/action/slice/slice';
 
 interface LoginItemProps {
     type: string;
@@ -15,13 +15,7 @@ interface LoginItemProps {
 const LoginItem = ({ type, title, icon, IconSocial }: LoginItemProps) => {
     const dispatch = useDispatch();
     const handleClick = () => {
-        switch (type) {
-            case 'suPhone':
-                dispatch(slSetSignWithUsername(true));
-                break;
-            default:
-                break;
-        }
+        dispatch(slSetTypeMode(type));
     };
 
     return (

@@ -11,7 +11,7 @@ import { FooterNav } from '../../footer';
 import NavbarItem from './NavbarItem';
 
 const Navbar = () => {
-    const { isLoggedIn } = useSelector((state: RootState) => state.app);
+    const { isLoggedIn, profileMode } = useSelector((state: RootState) => state.app);
     const dispatch = useDispatch();
 
     // handle funtion
@@ -21,7 +21,7 @@ const Navbar = () => {
     };
 
     return (
-        <div id="navbar" className="fixed w-[356px] h-screen pt-16 pb-7">
+        <div id="navbar" className={`${profileMode ? 'w-nav-profile pl-2' : 'w-nav'} fixed h-screen pt-16 pb-2`}>
             <Scrollbars
                 style={{
                     width: '100%',
@@ -50,17 +50,23 @@ const Navbar = () => {
                     >
                         <button
                             onClick={handleOpenLogin}
-                            className="border border-primary mt-10 w-[324px] h-12 ml-2 text-[18px] 
-                        font-bold text-primary rounded-md hover:bg-[rgba(254,44,85,0.06)]"
+                            className={`border border-primary mt-10 ${
+                                profileMode ? 'w-[208px]' : 'w-[324px]'
+                            } h-12 ml-2 text-[18px] 
+                            font-bold text-primary rounded-md hover:bg-[rgba(254,44,85,0.06)]`}
                         >
                             Login
                         </button>
                     </NavbarBox>
                 )}
 
-                <NavbarBox title="Suggested accounts">
-                    <SuggestedAcounts />
-                </NavbarBox>
+                {!profileMode || !isLoggedIn ? (
+                    <NavbarBox title="Suggested accounts">
+                        <SuggestedAcounts />
+                    </NavbarBox>
+                ) : (
+                    ''
+                )}
 
                 {isLoggedIn && (
                     <NavbarBox title="Following accounts">

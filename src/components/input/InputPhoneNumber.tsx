@@ -9,10 +9,11 @@ import { PhoneNumberFormat } from '../../interface';
 
 interface InputPhoneNumberProps {
     value: string;
+    placeholder?: string;
     setValue: (value: string) => void;
 }
 
-const InputPhoneNumber = ({ value, setValue }: InputPhoneNumberProps) => {
+const InputPhoneNumber = ({ value, placeholder = 'Phone number', setValue }: InputPhoneNumberProps) => {
     const [content, setContent] = useState<PhoneNumberFormat>(numberPhoneFomat[237]);
     const [list, setList] = useState<PhoneNumberFormat[]>(numberPhoneFomat);
     const [hide, setHide] = useState(false);
@@ -163,6 +164,7 @@ const InputPhoneNumber = ({ value, setValue }: InputPhoneNumberProps) => {
                         className="flex-1 flex items-center w-full h-full caret-primary pl-3"
                     >
                         <input
+                            placeholder={placeholder}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                             spellCheck

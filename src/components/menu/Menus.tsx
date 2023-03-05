@@ -1,6 +1,6 @@
 import React, { MouseEvent, useState, useEffect } from 'react';
 import Menu from './Menu';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
 import { Settings } from '../../interface';
@@ -16,6 +16,10 @@ interface MenusProps {
 const Menus = ({ isHide, data }: MenusProps) => {
     // location
     const location = useLocation();
+
+    // navigate
+
+    const navigate = useNavigate();
 
     //redux
     const { darkMode } = useSelector((state: RootState) => state.app);
@@ -33,11 +37,13 @@ const Menus = ({ isHide, data }: MenusProps) => {
             setListMenu((prev) => [...prev, children]);
         } else {
             // handleClick diferent
-            // console.log(item);
 
             switch (type) {
                 case 'logout':
                     dispatch(slLogout());
+                    navigate('/');
+                    break;
+                case 'profile':
                     break;
 
                 default:
