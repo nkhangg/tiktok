@@ -82,9 +82,7 @@ const SuggestedAcount = forwardRef(
                     )}
                 >
                     <div className="h-[48px] w-full rounded-[4px] px-4 py-[9px] flex items-center cursor-pointer gap-4 hover:bg-[rgba(22,24,35,0.03)] select-none">
-                        <div className="overflow-hidden h-[32px] w-[32px] rounded-full">
-                            <Img className="w-full h-full object-cover" src={image} alt={nickname} />
-                        </div>
+                        <Img className="h-[32px] w-[32px] rounded-full object-cover" src={image} alt={nickname} />
                         <div className="flex flex-col">
                             <span className="flex gap-2 text-[15px] font-[600]">
                                 <span className="block max-w-[260px] whitespace-nowrap font-bold">{nickname}</span>

@@ -63,7 +63,7 @@ const VideoUser = ({ title, image, video, like }: VideoUserProps) => {
                 </div>
             </div>
             <span className="text-lg font-[400]  h-[10%] text-white-opacity-75 flex items-center justify-start">
-                {title.length >= 20 ? title.slice(0, 20) + '...' : title}
+                {title.length >= 18 ? title.slice(0, 18) + '...' : title}
             </span>
         </div>
     );

@@ -43,7 +43,7 @@ const SuggestedAcounts = () => {
                         <SuggestedAcount
                             key={item.id}
                             image={item.avatar}
-                            tick={true}
+                            tick={item.tick}
                             nickname={item.nickname}
                             likeCount={item.likes_count}
                             follwers={item.followers_count}

@@ -1,6 +1,14 @@
 import axios from '../api/axios/httpBase';
 import { UpdateProps } from '../interface';
-import { apiCurUserType, apiGetUsersType, apiProfile, apiToken, apiUpdateUser, apiUserType } from '../type';
+import {
+    apiCurUserType,
+    apiGetFollowersType,
+    apiGetUsersType,
+    apiProfile,
+    apiToken,
+    apiUpdateUser,
+    apiUserType,
+} from '../type';
 
 export const apiGetUsers: apiGetUsersType = (page = 1, limit = 5) =>
     new Promise(async (resolve, reject) => {
@@ -19,6 +27,27 @@ export const apiGetUsers: apiGetUsersType = (page = 1, limit = 5) =>
             reject(error);
         }
     });
+export const apiGetFollowers: apiGetFollowersType = (page = 1, limit = 5, token) =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const responce = await axios({
+                method: 'get',
+                url: '/me/followings',
+                params: {
+                    page: page,
+                    per_page: limit,
+                },
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            });
+
+            resolve(responce.data);
+        } catch (error) {
+            reject(error);
+        }
+    });
+
 export const apiRegister: apiUserType = (email, password) =>
     new Promise(async (resolve, reject) => {
         try {
@@ -127,9 +156,10 @@ export const apiUpdateProfile: apiUpdateUser = (data: UpdateProps, token?: strin
     new Promise(async (resolve, reject) => {
         try {
             const responce = await axios({
-                method: 'post',
+                method: 'POST',
                 url: `/auth/me?_method=PATCH`,
                 headers: {
+                    'content-type': 'multipart/form-data',
                     Authorization: 'Bearer ' + token,
                 },
                 data: {

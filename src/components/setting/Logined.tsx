@@ -1,35 +1,38 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TippyHeadLess from '@tippyjs/react/headless';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import 'tippy.js/dist/tippy.css';
-import { RootState } from '../../type';
+import { RootState, initUserType } from '../../type';
 import Button from '../button/Button';
 import Menus from '../menu/Menus';
 import { userMenu } from '../../ultils/setting';
 import Tippy from '@tippyjs/react';
 import { LettersIcon, MessageIcon } from '../../ultils/Icon';
-import { Img } from '../image';
 
 const Logined = () => {
-    //state
-    const [isHide, setIsHide] = useState(false);
-
     //redux
     const { darkMode, initUser } = useSelector((state: RootState) => state.app);
+    //state
+    const [isHide, setIsHide] = useState(false);
+    const [stateInitUser, setStateInitUser] = useState<initUserType>(initUser);
 
     //handle funtion
 
     const setLinkPorfileForList = () => {
         return userMenu.map((item) => {
             if (item.type === 'profile') {
-                item.to = '/@' + initUser.to;
+                item.to = '/@' + stateInitUser.to;
             }
 
             return item;
         });
     };
+
+    useEffect(() => {
+        setStateInitUser(initUser);
+    }, [initUser]);
 
     return (
         <div className="flex gap-6 items-center">
@@ -61,7 +64,7 @@ const Logined = () => {
                 )}
             >
                 <div className="h-8 w-8 rounded-full overflow-hidden cursor-pointer">
-                    <Img className="h-full w-full object-cover" src={initUser.image} alt="avartar" />
+                    <img className="h-full w-full object-cover" src={stateInitUser.image} alt="avartar" />
                 </div>
             </TippyHeadLess>
         </div>

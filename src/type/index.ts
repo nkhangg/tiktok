@@ -4,6 +4,7 @@ import { LinkProps } from 'react-router-dom';
 import {
     ProfileInterface,
     ResponceAccount,
+    ResponceAccountFull,
     ResponceCheckingUsername,
     ResponceUser,
     UpdateProps,
@@ -18,7 +19,8 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export type CustomButton = string | ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
 export type apiSearchType = (value: string, type?: string) => Promise<ResponceAccount[]>;
-export type apiGetUsersType = (page?: number, limit?: number) => Promise<ResponceAccount[]>;
+export type apiGetUsersType = (page?: number, limit?: number, token?: string) => Promise<ResponceAccount[]>;
+export type apiGetFollowersType = (page?: number, limit?: number, token?: string) => Promise<ResponceAccountFull>;
 export type apiUserType = (email: string, password: string) => Promise<User>;
 export type apiUpdateUser = (data: UpdateProps, token: string) => Promise<User>;
 export type apiCheckingUSername = (username: string) => Promise<ResponceCheckingUsername>;

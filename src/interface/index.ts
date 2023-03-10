@@ -44,6 +44,22 @@ export interface ResponceAccount {
     is_followed?: boolean;
 }
 
+export interface ResponceAccountFull {
+    data: ResponceAccount[];
+    meta: {
+        pagination: {
+            total: number;
+            count: number;
+            per_page: number;
+            current_page: number;
+            total_pages: number;
+            links: {
+                next: string;
+            };
+        };
+    };
+}
+
 export interface Logins {
     type: string;
     title: string;
@@ -173,6 +189,17 @@ export interface ResponceCheckingUsername {
 export interface UpdateProps {
     firstname: string;
     lastname: string;
-    avatar?: File;
+    avatar?: File | FormData;
     bio: string;
+}
+
+export interface EditAvatar {
+    state: boolean;
+    image: File | null;
+}
+
+export interface AvatarEdited {
+    preview: string;
+    image: File | null | undefined | FormData;
+    state: boolean;
 }

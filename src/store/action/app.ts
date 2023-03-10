@@ -1,4 +1,4 @@
-import { Action, User } from '../../interface';
+import { Action, AvatarEdited, EditAvatar, User } from '../../interface';
 import { initUserType } from '../../type';
 import { actionType } from './actionType';
 export interface InitStateApp {
@@ -11,6 +11,8 @@ export interface InitStateApp {
     userProfile: User | null;
     initUser: initUserType | null;
     token: string | null;
+    editAvatar: EditAvatar;
+    avatarEdited: AvatarEdited;
 }
 const initState: InitStateApp = {
     isLoggedIn: false,
@@ -22,6 +24,8 @@ const initState: InitStateApp = {
     userProfile: null,
     initUser: null,
     token: null,
+    editAvatar: { state: false, image: null },
+    avatarEdited: { preview: '', image: null, state: false },
 };
 
 const appReducer = (state: InitStateApp = initState, action: Action<string, string>) => {
@@ -82,6 +86,19 @@ const appReducer = (state: InitStateApp = initState, action: Action<string, stri
             return {
                 ...state,
                 isOpenEdit: action.data,
+                avatarEdited: { preview: '', image: null, state: false },
+            };
+        }
+        case actionType.SET_EDIT_AVATAR_PROFILE: {
+            return {
+                ...state,
+                editAvatar: action.data,
+            };
+        }
+        case actionType.SET_AVATAR_EDITED: {
+            return {
+                ...state,
+                avatarEdited: action.data,
             };
         }
 

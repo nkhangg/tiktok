@@ -12,7 +12,7 @@ import { Loading } from '../components/loading';
 import { Navbar } from '../components/main';
 import { Contents } from '../components/profile';
 import { ProfileInterface } from '../interface';
-import { slOpenEdit, slSetProfileMode, slSetScrollIntoView, slSetUser } from '../store/action/slice/slice';
+import { slOpenEdit, slSetImageUser, slSetProfileMode, slSetScrollIntoView } from '../store/action/slice/slice';
 import { initUserType, RootState } from '../type';
 import { title } from '../ultils/app';
 import { linkNonImage } from '../ultils/links';
@@ -20,7 +20,7 @@ import { linkNonImage } from '../ultils/links';
 const Profile = () => {
     // redux
     const dispatch = useDispatch();
-    const { initUser, token, isLoggedIn, scrollIntView, userProfile } = useSelector((state: RootState) => state.app);
+    const { initUser, token, isLoggedIn, scrollIntView } = useSelector((state: RootState) => state.app);
     const me: initUserType = initUser;
 
     const refDiv = useRef<HTMLDivElement>(null);
@@ -42,37 +42,16 @@ const Profile = () => {
             if (responce) {
                 setUser(responce);
                 setFallback(responce.avatar);
-                dispatch(slSetUser(responce));
             } else {
                 setUser(null);
             }
         } catch (error) {
             setUser(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nickname, token, dispatch]);
 
-    const reCallApi = useCallback(async () => {
-        try {
-            setLoading(true);
-            const responce: ProfileInterface = await apiGetProfile(nickname as string, token);
-            setLoading(false);
-            if (responce) {
-                setUser(responce);
-                setFallback(responce.avatar);
-            } else {
-                setUser(null);
-            }
-        } catch (error) {
-            setUser(null);
-        }
-    }, [nickname, token]);
-
     // useEffect
-
-    useEffect(() => {
-        reCallApi();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userProfile]);
 
     useEffect(() => {
         if (scrollIntView) {
@@ -100,7 +79,14 @@ const Profile = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
-    console.log();
+    useEffect(() => {
+        if (!user) return;
+        setFallback(user?.avatar);
+        if (!me) return;
+        if (user.avatar === me.image || user.nickname !== me.to) return;
+        dispatch(slSetImageUser({ ...me, image: user?.avatar }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     return (
         <div className="flex justify-between">
@@ -136,13 +122,14 @@ const Profile = () => {
                                     user ? user.first_name + ' ' + user.last_name : ''
                                 }`}</h4>
                                 {me && me.to === user?.nickname && isLoggedIn ? (
-                                    <Button className="flex items-center justify-between px-4 mt-4 rounded-[4px] gap-2 font-bold">
+                                    <Button
+                                        onClick={() => dispatch(slOpenEdit(true))}
+                                        className="flex items-center justify-between px-4 mt-4 rounded-[4px] gap-2 font-bold"
+                                    >
                                         <span>
                                             <FontAwesomeIcon icon={faEdit} />
                                         </span>
-                                        <span onClick={() => dispatch(slOpenEdit(true))} className="">
-                                            Edit profile
-                                        </span>
+                                        <span className="">Edit profile</span>
                                     </Button>
                                 ) : (
                                     <TogleFollowButton user={user ? user : null} />
@@ -184,7 +171,7 @@ const Profile = () => {
             </div>
             <ButtonGetApp />
 
-            {user && <EditPopup />}
+            {me && me.to === user?.nickname && <EditPopup curUser={user} setCurUser={setUser} />}
         </div>
     );
 };

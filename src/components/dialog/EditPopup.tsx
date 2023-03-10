@@ -1,39 +1,50 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { MouseEvent, useState, useEffect, useCallback } from 'react';
+import React, { MouseEvent, useState, useEffect, useCallback, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiUpdateProfile } from '../../api/users';
 import useDebounce from '../../hook/useDebounce';
-import { ProfileInterface } from '../../interface';
-import { slOpenEdit, slSetUser } from '../../store/action/slice/slice';
+import { AvatarEdited, EditAvatar as Editinterface, ProfileInterface } from '../../interface';
+import { slOpenEdit, slSetAvatarEdited, slSetEditAvatarProfile } from '../../store/action/slice/slice';
 import { RootState } from '../../type';
 import { sleep } from '../../ultils/funtion';
-import { PenIcon } from '../../ultils/Icon';
-import { EditBox } from '../box';
 import { Button } from '../button';
-import { Img } from '../image';
-import { Input, TextArea } from '../input';
+import EditAvatar from './EditAvatar';
+import EditProfile from './EditProfile';
 import Popup from './Popup';
+import { dataURLtoFile } from '../../ultils/app';
 
-const EditPopup = () => {
-    const { isOpenEdit, userProfile, token } = useSelector((state: RootState) => state.app);
-    const curUser: ProfileInterface = userProfile;
+interface EditPopupProps {
+    curUser: ProfileInterface;
+    setCurUser: (data: ProfileInterface) => void;
+}
+
+const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
+    const { isOpenEdit, token, editAvatar, avatarEdited } = useSelector((state: RootState) => state.app);
+
+    const avatarEditedType: AvatarEdited = avatarEdited;
+
+    const curEditAvatar: Editinterface = editAvatar;
     const dispatch = useDispatch();
 
     // state value
     const [username, setUsername] = useState(curUser.nickname);
     const [name, setName] = useState(`${curUser.first_name} ${curUser.last_name}`);
-    const [bio, setBio] = useState(curUser.bio);
+    const [bio, setBio] = useState(curUser.bio.trim());
+    const [avatar, setAvatar] = useState(curUser.avatar);
 
     // state
     const [stateUsername, setStateUsername] = useState({ loading: false, error: false, checked: false });
     const [stateBio, setStateBio] = useState({ error: false });
+    const [editStateProfile, setEditStateProfile] = useState<Editinterface>(curEditAvatar);
+
+    // list state
 
     const usernameDebounce = useDebounce(username, 200);
 
     const handleHiddePopup = (e: MouseEvent<HTMLElement>) => {
-        dispatch(slOpenEdit());
         e.stopPropagation();
+        dispatch(slOpenEdit());
     };
 
     const handleUsername = useCallback(async () => {
@@ -53,6 +64,8 @@ const EditPopup = () => {
     }, [usernameDebounce]);
 
     const handleChecking = () => {
+        if (avatar !== curUser.avatar) return false;
+
         if (stateUsername.error || stateBio.error || name.length === 0) {
             return true;
         }
@@ -90,18 +103,48 @@ const EditPopup = () => {
         }
 
         try {
-            const res = await apiUpdateProfile({ bio, firstname, lastname }, token);
+            const res = await apiUpdateProfile(
+                { bio, firstname, lastname, avatar: avatarEditedType.image ? avatarEditedType.image : undefined },
+                token,
+            );
             if (res) {
                 dispatch(slOpenEdit(false));
-                dispatch(slSetUser({ ...userProfile, res }));
+                setCurUser({
+                    ...curUser,
+                    ...res,
+                    followers_count: curUser.followers_count,
+                    followings_count: curUser.followings_count,
+                });
+                setAvatar(res.avatar);
             }
         } catch (error) {
             console.log(error);
         }
     };
 
+    const handleChageEditProfile = () => {
+        dispatch(slSetEditAvatarProfile({ state: false, image: null }));
+    };
+
+    const handleApplyAvatar = () => {
+        dispatch(
+            slSetAvatarEdited({
+                ...avatarEditedType,
+                state: true,
+                image: dataURLtoFile(avatarEditedType.preview as string)
+                    ? dataURLtoFile(avatarEditedType.preview as string)
+                    : null,
+            }),
+        );
+        dispatch(slSetEditAvatarProfile({ state: false, image: null }));
+    };
+
     useEffect(() => {
-        if (bio.length > 80) {
+        setEditStateProfile(curEditAvatar);
+    }, [curEditAvatar]);
+
+    useEffect(() => {
+        if (bio.trim().length > 81) {
             setStateBio({ error: true });
         } else {
             setStateBio({ error: false });
@@ -112,86 +155,59 @@ const EditPopup = () => {
         handleUsername();
     }, [handleUsername]);
 
+    useEffect(() => {
+        return () => {
+            dispatch(slSetAvatarEdited({ state: false, preview: '', image: null }));
+        };
+    }, [dispatch, curUser]);
+
     return (
         <Popup full slice={slOpenEdit} visible={isOpenEdit}>
-            <div className="w-[700px] h-[700px] flex flex-col justify-between">
+            <div className="w-[700px] h-[700px] max-h-[700px] flex flex-col justify-between">
                 <div
-                    onClick={handleHiddePopup.bind(this)}
                     className="h-[73px] px-6 pt-6 pb-3 border-b-[0.5px] 
                     border-white-opacity-2 text-white-opacity leading-9
                     flex items-center justify-between"
                 >
-                    <span className="font-medium text-2xl">Edit profile</span>
+                    <div className="flex items-center gap-2">
+                        {editStateProfile.state && (
+                            <span
+                                onClick={handleChageEditProfile.bind(this)}
+                                className="h-6 w-6 flex items-center justify-center text-2xl cursor-pointer"
+                            >
+                                <FontAwesomeIcon icon={faChevronLeft} />
+                            </span>
+                        )}
+                        <span className="font-medium text-2xl">
+                            {editStateProfile.state ? 'Edit photo' : 'Edit profile'}
+                        </span>
+                    </div>
                     <span
+                        onClick={handleHiddePopup.bind(this)}
                         className="text-2xl rounded-full w-10 h-10 bg-white-opacity-03
                     cursor-pointer flex items-center justify-center text-gray-700"
                     >
                         <FontAwesomeIcon icon={faClose} />
                     </span>
                 </div>
-                <div className="flex-1 px-6 pt-2">
-                    <EditBox title="Profile photo">
-                        <div className="w-[224px] h-[96px] flex items-center justify-end relative">
-                            <Img
-                                className="h-full w-[96px] object-cover rounded-full "
-                                src={curUser.avatar}
-                                alt="avatar"
-                            />
-                            <span
-                                className="absolute h-8 w-8 bg-white border border-[rgb(208,208,211)] 
-                            cursor-pointer bottom-0 rounded-full flex items-center justify-center"
-                            >
-                                <PenIcon />
-                            </span>
-                        </div>
-                    </EditBox>
+                {!editStateProfile.state && !editStateProfile.image ? (
+                    <EditProfile
+                        cuUser={curUser}
+                        avatar={avatar}
+                        setAvatar={setAvatar}
+                        name={name}
+                        setName={setName}
+                        username={username}
+                        setUsername={setUsername}
+                        bio={bio.trim()}
+                        setBio={setBio}
+                        stateBio={stateBio}
+                        stateUsername={stateUsername}
+                    />
+                ) : (
+                    <EditAvatar />
+                )}
 
-                    <EditBox title="Username">
-                        <div>
-                            <Input
-                                error={stateUsername.error}
-                                loading={stateUsername.loading}
-                                checked={stateUsername.checked}
-                                small
-                                placeholder="Username"
-                                type="text"
-                                value={username}
-                                setValue={setUsername}
-                            />
-                            {stateUsername.error ? (
-                                <span className="h-[18px] leading-[18px] text-xs mt-3 text-error">
-                                    Include at least 2 characters in your username
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            <p className="text-xs text-white-opacity-75 leading-[18px] mt-4 max-w-[460px] truncate">
-                                {`www.tiktok.com/@${username}`}
-                            </p>
-                            <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">
-                                Usernames can only contain letters, numbers, underscores, and periods. Changing your
-                                username will also change your profile link.
-                            </p>
-                        </div>
-                    </EditBox>
-
-                    <EditBox title="Name">
-                        <div>
-                            <Input small placeholder="Username" type="text" value={name} setValue={setName} />
-                            <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">
-                                Your nickname can only be changed once every 7 days.
-                            </p>
-                        </div>
-                    </EditBox>
-                    <EditBox border={false} title="Bio">
-                        <div>
-                            <TextArea error={stateBio.error} placeholder="Bio" value={bio} setValue={setBio} />
-                            <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">
-                                <span className={`${stateBio.error ? 'text-error' : ''}`}>{bio.length}</span>/80
-                            </p>
-                        </div>
-                    </EditBox>
-                </div>
                 <div
                     className="h-[86px] border-t-[0.5px] 
                     border-white-opacity-2 flex items-center px-6 gap-4 justify-end"
@@ -199,18 +215,26 @@ const EditPopup = () => {
                     <Button onClick={() => dispatch(slOpenEdit(false))} className="rounded">
                         <span>Cancel</span>
                     </Button>
-                    <Button
-                        onClick={handleUpdate.bind(this)}
-                        primary={!handleChecking()}
-                        disable={handleChecking()}
-                        className="rounded"
-                    >
-                        <span>Save</span>
-                    </Button>
+                    {!editStateProfile.state && (
+                        <Button
+                            onClick={handleUpdate.bind(this)}
+                            primary={!handleChecking()}
+                            disable={handleChecking()}
+                            className="rounded"
+                        >
+                            <span>Save</span>
+                        </Button>
+                    )}
+
+                    {editStateProfile.state && (
+                        <Button onClick={handleApplyAvatar.bind(this)} primary>
+                            <span>Apply</span>
+                        </Button>
+                    )}
                 </div>
             </div>
         </Popup>
     );
 };
 
-export default EditPopup;
+export default memo(EditPopup);

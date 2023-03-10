@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { User } from '../../../interface';
+import { AvatarEdited, EditAvatar, User } from '../../../interface';
 import { actionType } from '../actionType';
 
 export const slOpenLogin = (flag: boolean = false) => {
@@ -13,6 +13,7 @@ export const slOpenEdit = (flag: boolean = false) => {
 export const slSetDarkMode = (flag: boolean) => {
     return { type: actionType.SET_DARK_MODE, data: flag };
 };
+
 export const slSetProfileMode = (flag: boolean = false) => {
     return { type: actionType.SET_PROFILE_MODE, data: flag };
 };
@@ -20,6 +21,7 @@ export const slSetProfileMode = (flag: boolean = false) => {
 export const slLogout = () => {
     return { type: actionType.SET_LOGOUT, data: false };
 };
+
 export const slSetScrollIntoView = (flag: boolean) => {
     return { type: actionType.SCROLLINTOVIEW, data: flag };
 };
@@ -68,6 +70,20 @@ export const slSetUser = (data: User | null) => {
 export const slSetLogin = (data: boolean) => {
     return {
         type: actionType.SET_LOGIN,
+        data,
+    };
+};
+
+export const slSetEditAvatarProfile = (data: EditAvatar) => {
+    return {
+        type: actionType.SET_EDIT_AVATAR_PROFILE,
+        data,
+    };
+};
+
+export const slSetAvatarEdited = (data: AvatarEdited) => {
+    return {
+        type: actionType.SET_AVATAR_EDITED,
         data,
     };
 };
