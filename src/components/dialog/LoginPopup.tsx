@@ -8,18 +8,20 @@ import { ForgotPassword, Login, SelectionLogin, Signup } from '../login';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { title } from '../../ultils/app';
 import Popup from './Popup';
+import { Loading } from '../loading';
 
 const LoginPopup = () => {
+    //redux
+    const { isOpenLogin } = useSelector((state: RootState) => state.app);
+    const { typeMode, isLogin, loginLoading } = useSelector((state: RootState) => state.login);
+    const dispatch = useDispatch();
+
     // state
     const [list, setList] = useState<JSX.Element[]>([<SelectionLogin />]);
+    const [loading, setLoading] = useState(loginLoading);
 
     // variable
     const lastList = list[list.length - 1];
-
-    //redux
-    const { isOpenLogin } = useSelector((state: RootState) => state.app);
-    const { typeMode, isLogin } = useSelector((state: RootState) => state.login);
-    const dispatch = useDispatch();
 
     // handle funtion
 
@@ -84,6 +86,10 @@ const LoginPopup = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [typeMode]);
 
+    useEffect(() => {
+        setLoading(loginLoading);
+    }, [loginLoading]);
+
     return (
         <Popup width="" slice={slOpenLogin} visible={isOpenLogin}>
             <div className="w-[483px] h-[70vh]  flex flex-col justify-between">
@@ -138,6 +144,14 @@ const LoginPopup = () => {
                 >
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </span>
+            ) : (
+                ''
+            )}
+
+            {loading ? (
+                <div className="absolute w-full h-full bg-white-opacity-12 inset-0 flex items-center justify-center">
+                    <Loading />
+                </div>
             ) : (
                 ''
             )}

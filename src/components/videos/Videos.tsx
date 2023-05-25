@@ -1,60 +1,57 @@
-import React, { useCallback, useRef, useState, memo, useMemo } from 'react';
-import usePosts from '../../hook/usePosts';
-
+import React, { useCallback, useRef } from 'react';
+import { useInfiniteQuery } from 'react-query';
+import { apiGetVideos } from '../../api/videos';
+import Video from './Video';
 import { Loading } from '../loading';
-import { default as VideoComponent } from './Video';
 
-const Videos = () => {
-    const [pageNum, setPageNum] = useState(1);
-    const { isLoading, isError, results, hasNextPge } = usePosts(pageNum);
-
+const Videos2 = () => {
     const refVideos = useRef<HTMLDivElement>(null);
+    const {
+        fetchNextPage, //function
+        hasNextPage, // boolean
+        isFetchingNextPage, // boolean
+        data,
+        status,
+    } = useInfiniteQuery('/videos', ({ pageParam = 1 }) => apiGetVideos(pageParam), {
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length ? allPages.length + 1 : undefined;
+        },
+    });
 
-    const intObserver = useRef<IntersectionObserver>();
+    const intObserver: any = useRef();
     const lastPostRef = useCallback(
-        (post: Element) => {
-            if (isLoading) return;
+        (post: any) => {
+            if (isFetchingNextPage) return;
 
             if (intObserver.current) intObserver.current.disconnect();
 
             intObserver.current = new IntersectionObserver((posts) => {
-                if (posts[0].isIntersecting && hasNextPge) {
-                    setPageNum((prev) => prev + 1);
+                if (posts[0].isIntersecting && hasNextPage) {
+                    console.log('We are near the last post!');
+                    fetchNextPage();
                 }
             });
 
             if (post) intObserver.current.observe(post);
         },
-        [isLoading, hasNextPge],
+        [isFetchingNextPage, fetchNextPage, hasNextPage],
     );
 
-    const constents = useMemo(() => {
-        const content = results.map((video, index) => {
-            if (results.length === index + 1) {
-                return <VideoComponent ref={lastPostRef} key={video.id} data={video} />;
+    if (status === 'error') return <p className="center">Error: </p>;
+
+    const contents = data?.pages.map((pg) => {
+        return pg.map((post, i) => {
+            if (pg.length === i + 1) {
+                return <Video ref={lastPostRef} key={post.id} data={post} />;
             }
-
-            return <VideoComponent key={video.id + video.user_id + Math.random() * 100} data={video} />;
+            return <Video ref={lastPostRef} key={post.id} data={post} />;
         });
-
-        return content;
-    }, [lastPostRef, results]);
-
-    // handleLoadingEvent
-
-    // use Effect
-
-    if (isError)
-        return (
-            <div id="videos" className="pt-5">
-                404 not found !
-            </div>
-        );
+    });
 
     return (
         <div ref={refVideos} className="pt-5">
-            {constents}
-            {isLoading && (
+            {contents}
+            {isFetchingNextPage && (
                 <div className="w-[692px] h-full flex flex-col items-center justify-center">
                     <Loading />
                 </div>
@@ -63,4 +60,4 @@ const Videos = () => {
     );
 };
 
-export default memo(Videos);
+export default Videos2;

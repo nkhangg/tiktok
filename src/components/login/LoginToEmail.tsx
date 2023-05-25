@@ -8,6 +8,7 @@ import {
     slSetLogin,
     slSetToken,
     slSetImageUser,
+    slSetLoginLoading,
 } from '../../store/action/slice/slice';
 import { ButtonGray } from '../button';
 import { Input } from '../input';
@@ -47,15 +48,18 @@ const LoginToEmail = () => {
         if (email === '' || password === '') return;
 
         try {
+            dispatch(slSetLoginLoading(true));
             const res = await apiLogin(email, password);
             if (res) {
                 dispatch(slSetToken(res.meta?.token));
                 dispatch(slSetImageUser({ image: res.data.avatar, to: res.data.nickname }));
                 dispatch(slOpenLogin());
                 dispatch(slSetLogin(true));
+                dispatch(slSetLoginLoading(false));
             } else {
                 dispatch(slSetUser(null));
                 dispatch(slSetLogin(false));
+                dispatch(slSetLoginLoading(false));
             }
         } catch (error) {}
     };
@@ -65,7 +69,7 @@ const LoginToEmail = () => {
     }, [invalidButton]);
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ">
             <Input type="text" value={email} setValue={setEmail} placeholder="Email or username" />
             <Input type="password" value={password} setValue={setPassword} placeholder="Password" />
             <div className="mb-[21px]">

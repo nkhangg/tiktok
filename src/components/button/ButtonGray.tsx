@@ -7,6 +7,7 @@ interface ButtonGrayProps {
     border?: boolean;
     ready?: boolean;
     className?: string;
+    background?: string;
     onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
@@ -17,13 +18,15 @@ const ButtonGray = ({
     border = false,
     ready,
     className,
+    background = 'bg-[rgba(22,24,35,.06)]',
     onClick,
 }: ButtonGrayProps) => {
     return (
         <button
             onClick={onClick}
             className={`w-[${width}] h-11 px-3  rounded-sm 
-            flex items-center bg-[rgba(22,24,35,.06)]
+            flex items-center 
+            ${background}
             ${className ? className : ''}
             ${border ? 'border border-white-opacity-12' : ''} justify-center
             ${ready ? 'text-white-opacity cursor-pointer' : ' text-white-opacity-34'}

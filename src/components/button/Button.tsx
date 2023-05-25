@@ -5,10 +5,11 @@ interface ButtonPops {
     className?: string;
     primary?: boolean;
     disable?: boolean;
+    maxWidth?: boolean;
     onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
-const Button = ({ children, className, primary, disable, onClick }: ButtonPops) => {
+const Button = ({ children, className, primary, disable, maxWidth = true, onClick }: ButtonPops) => {
     return (
         <button
             onClick={!disable ? onClick : () => {}}
@@ -20,7 +21,7 @@ const Button = ({ children, className, primary, disable, onClick }: ButtonPops) 
                     : 'border border-[#e3e3e4] text-[#161823] font-[600] hover:bg-white-opacity-03 cursor-pointer'
             }  
             
-            min-w-[100px] max-w-[164px] h-[37px] text-[16px]`}
+            min-w-[100px] ${maxWidth ? 'max-w-[164px]' : ''} h-[37px] text-[16px]`}
         >
             {children}
         </button>

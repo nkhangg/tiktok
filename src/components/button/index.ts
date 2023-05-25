@@ -10,3 +10,5 @@ export { default as ButtonSendCode } from './ButtonSendCode';
 export { default as ShareButton } from './ShareButton';
 export { default as ButtonOptionProfile } from './ButtonOptionProfile';
 export { default as TogleFollowButton } from './TogleFollowButton';
+export { default as ButtonOptions } from './ButtonOptions';
+export { default as Toggle } from './Toggle';

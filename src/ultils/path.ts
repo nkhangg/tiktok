@@ -4,4 +4,5 @@ export const path = {
     FEEDBACK: '/feedback',
     LIVE: '/live',
     FOLLOWING: '/following',
+    UPLOAD: '/upload',
 };

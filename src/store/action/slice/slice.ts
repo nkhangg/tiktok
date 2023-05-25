@@ -87,3 +87,10 @@ export const slSetAvatarEdited = (data: AvatarEdited) => {
         data,
     };
 };
+
+export const slSetLoginLoading = (data: boolean) => {
+    return {
+        type: actionType.SET_LOGIN_LOAIDNG,
+        data,
+    };
+};

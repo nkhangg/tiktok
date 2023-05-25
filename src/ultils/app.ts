@@ -3,6 +3,7 @@ import { OptionsRange } from '../interface';
 export const title = {
     home: 'Watch trending videos for you | TikTok',
     login: 'Login | TikTok',
+    upload: 'Upload | TikTok',
 };
 
 export const filterDulicate = <T>(arr: T[]) =>

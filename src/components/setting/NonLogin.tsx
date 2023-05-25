@@ -14,16 +14,20 @@ const NonLogin = () => {
     const [isHide, setIsHide] = useState(false);
 
     //redux
-    const { darkMode } = useSelector((state: RootState) => state.app);
+    const { darkMode, isLoggedIn } = useSelector((state: RootState) => state.app);
     const dispatch = useDispatch();
 
     //handle funtion
     const handleOpenLogin = () => {
+        if (isLoggedIn) return;
         dispatch(slOpenLogin(true));
     };
     return (
         <div className="flex gap-6 items-center">
-            <Button className={`${darkMode ? 'bg-[rgba(255,255,255,0.08)]' : ''} flex gap-2 items-center p-4`}>
+            <Button
+                onClick={handleOpenLogin.bind(this)}
+                className={`${darkMode ? 'bg-[rgba(255,255,255,0.08)]' : ''} flex gap-2 items-center p-4`}
+            >
                 <span className={`${darkMode ? 'text-white' : 'text-black'}`}>
                     <FontAwesomeIcon icon={faPlus} />
                 </span>

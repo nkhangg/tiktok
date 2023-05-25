@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { apiGetVideos } from '../api/videos';
 import { Video } from '../interface';
+import { RootState } from '../type';
 
 const usePosts = (pageNumber: number = 1) => {
     const [results, setResults] = useState<Video[]>([]);
@@ -8,6 +10,8 @@ const usePosts = (pageNumber: number = 1) => {
     const [isError, setIsError] = useState(false);
     const [error, setError] = useState({});
     const [hasNextPge, setHasNextPage] = useState(false);
+
+    const { token } = useSelector((state: RootState) => state.app);
 
     useEffect(() => {
         setIsLoading(true);
@@ -18,7 +22,12 @@ const usePosts = (pageNumber: number = 1) => {
 
         const { signal } = controller;
 
-        apiGetVideos(pageNumber, { signal })
+        apiGetVideos(pageNumber, {
+            signal,
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
             .then((data) => {
                 setResults((prev) => [...prev, ...data]);
                 setHasNextPage(Boolean(data.length));
@@ -32,7 +41,7 @@ const usePosts = (pageNumber: number = 1) => {
             });
 
         return () => controller.abort();
-    }, [pageNumber]);
+    }, [pageNumber, token]);
 
     return { isLoading, isError, error, results, hasNextPge };
 };

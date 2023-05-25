@@ -8,6 +8,7 @@ export interface InitStateApp {
     month: string | null;
     day: string | null;
     year: string | null;
+    loginLoading: boolean;
 }
 const initState = {
     typeMode: null,
@@ -16,6 +17,7 @@ const initState = {
     month: null,
     day: null,
     year: null,
+    loginLoading: false,
 };
 
 const loginReducer = (state: InitStateApp = initState, action: Action<string, string>) => {
@@ -52,6 +54,12 @@ const loginReducer = (state: InitStateApp = initState, action: Action<string, st
             return {
                 ...state,
                 year: action.data,
+            };
+        }
+        case actionType.SET_LOGIN_LOAIDNG: {
+            return {
+                ...state,
+                loginLoading: action.data,
             };
         }
 

@@ -10,13 +10,15 @@ import Menus from '../menu/Menus';
 import { userMenu } from '../../ultils/setting';
 import Tippy from '@tippyjs/react';
 import { LettersIcon, MessageIcon } from '../../ultils/Icon';
+import { useNavigate } from 'react-router-dom';
 
 const Logined = () => {
     //redux
-    const { darkMode, initUser } = useSelector((state: RootState) => state.app);
+    const { darkMode, initUser, isLoggedIn } = useSelector((state: RootState) => state.app);
     //state
     const [isHide, setIsHide] = useState(false);
     const [stateInitUser, setStateInitUser] = useState<initUserType>(initUser);
+    const navigate = useNavigate();
 
     //handle funtion
 
@@ -30,13 +32,22 @@ const Logined = () => {
         });
     };
 
+    const handleChageUploadPage = () => {
+        if (isLoggedIn) {
+            navigate('/upload');
+        }
+    };
+
     useEffect(() => {
         setStateInitUser(initUser);
     }, [initUser]);
 
     return (
         <div className="flex gap-6 items-center">
-            <Button className={`${darkMode ? 'bg-[rgba(255,255,255,0.08)]' : ''} flex gap-2 items-center p-4`}>
+            <Button
+                onClick={handleChageUploadPage.bind(this)}
+                className={`${darkMode ? 'bg-[rgba(255,255,255,0.08)]' : ''} flex gap-2 items-center p-4`}
+            >
                 <span className={`${darkMode ? 'text-white' : 'text-black'}`}>
                     <FontAwesomeIcon icon={faPlus} />
                 </span>
