@@ -2,13 +2,14 @@ import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faPause, faPlay, faVolumeLow, faVolumeMute, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
-import React, { useEffect, useRef, useState, forwardRef, ForwardedRef, memo } from 'react';
+import React, { useEffect, useRef, useState, forwardRef, ForwardedRef, memo, RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useElementOnScreen from '../../hook/useElementOnScreen';
 import { Video as VideoInterface } from '../../interface';
 import { secondsToMinute } from '../../ultils/funtion';
 import { Img } from '../image';
 import Interaction from './Interaction';
+import { sleep } from '../../ultils/app';
 
 interface VideoProps {
     data: VideoInterface;
@@ -17,6 +18,9 @@ interface VideoProps {
 const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     //ref
     const ref = useRef<HTMLVideoElement>(null);
+    const refInput = useRef<HTMLInputElement>(null);
+    const refTimeLine = useRef<HTMLInputElement>(null);
+    const refProgress: RefObject<HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
 
     // variable
@@ -28,6 +32,8 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMute, setIsMute] = useState(true);
     const [persent, setPersent] = useState(0);
+
+    const [progress, setProgress] = useState(0);
 
     // handle funtion
     const handleFollow = () => {
@@ -71,6 +77,32 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
         setPersent(Number(timeUpdate));
     };
 
+    const setVolumn = (percent: number) => {
+        const video = ref.current;
+
+        if (video) video.volume = percent / 100;
+    };
+
+    const setProgressAndVolumn = () => {
+        if (!refInput) return;
+
+        const max = parseInt(refInput.current?.getAttribute('max') || '100');
+        const min = parseInt(refInput.current?.getAttribute('min') || '0');
+        const value = parseInt(refInput.current?.value || '0');
+
+        let percent = ((value - min) / (max - min)) * 100;
+
+        setProgress(percent);
+        setVolumn(progress);
+    };
+
+    const handleMoveTime = () => {
+        if (!refTimeLine) return;
+        const second = (parseInt(refTimeLine.current?.value as string) / 100) * (ref.current?.duration || 0);
+        ref.current!.currentTime = second;
+        setPersent(second);
+    };
+
     // hook custom
 
     const options = {
@@ -83,16 +115,36 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
     //use effect
     useEffect(() => {
+        (async () => {
+            if (!ref.current) return;
+
+            if (isVisibile) {
+                await sleep(800);
+                ref.current.play();
+                setIsPlaying(true);
+            } else {
+                ref.current.pause();
+                setIsPlaying(false);
+            }
+        })();
+    }, [isVisibile]);
+
+    useEffect(() => {
+        setProgress(50);
+        setVolumn(50);
+    }, []);
+
+    useEffect(() => {
         if (!ref.current) return;
 
-        if (isVisibile) {
-            ref.current.play();
-            setIsPlaying(true);
+        if (progress <= 1) {
+            setIsMute(false);
+            ref.current.muted = true;
         } else {
-            ref.current.pause();
-            setIsPlaying(false);
+            setIsMute(true);
+            ref.current.muted = false;
         }
-    }, [isVisibile]);
+    }, [progress]);
 
     return (
         <div ref={refs} className="py-5 max-w-[692px] border-b border-gray-200 snap-center">
@@ -146,14 +198,25 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                     >
                         <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
                     </span>
+
                     <Tippy
                         interactive
+                        offset={[0, 14]}
                         render={(attrs) => (
                             <div {...attrs} className="text-white">
-                                <div className="bg-[rgba(22,24,35,0.34)] w-6 h-16 rounded-[32px] relative">
-                                    <div className="absolute w-[2px] h-12 bg-[rgba(255,255,255,0.34)] left-[11px] top-2 bottom-2 rounded"></div>
-                                    <div className="w-3 h-3 bg-white rounded-xl z-[1] left-[6px] bottom-2 absolute"></div>
-                                    <div className="w-[2px] h-12 bg-white absolute left-[11px] bottom-2 rounded origin-cb"></div>
+                                <div className="bg-[rgba(22,24,35,.34)] rotate-[-90deg] w-16 h-6 rounded-[32px] relative flex flex-col overflow-hidden px-2">
+                                    <div className="w-full h-full flex items-center relative">
+                                        <input
+                                            onInput={setProgressAndVolumn.bind(this)}
+                                            onClick={setProgressAndVolumn.bind(this)}
+                                            ref={refInput}
+                                            className="input-range w-full h-[2px] bg-[rgba(255,255,255,0.34)] rounded z-10"
+                                            type="range"
+                                            max={100}
+                                            min={0}
+                                        />
+                                        <div ref={refProgress} style={{ width: progress + '%' }} className="w-[50%] h-[2px] absolute bg-white rounded"></div>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -172,13 +235,30 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                         overflow-hidden`}
                     >
                         <div className="w-[75%] h-full flex items-center relative">
-                            <div className={`w-full left-[0%] h-[2px] bg-[rgba(255,255,255,0.34)] absolute rounded-sm transition-all ease duration-150`}>
+                            {/* <div className={`w-full left-[0%] h-[2px] bg-[rgba(255,255,255,0.34)] absolute rounded-sm transition-all ease duration-150`}>
                                 <div
                                     style={{
                                         width: persent + '%',
                                     }}
                                     className="w-0 h-full bg-white rounded-sm transition-all ease-linear duration-150"
                                 ></div>
+                            </div> */}
+
+                            <div className="w-full h-full flex items-center relative">
+                                <input
+                                    ref={refTimeLine}
+                                    onInput={handleMoveTime.bind(this)}
+                                    onClick={handleMoveTime.bind(this)}
+                                    className="input-range input-video w-full h-[2px] bg-[rgba(255,255,255,0.34)] rounded z-10"
+                                    type="range"
+                                    max={100}
+                                    min={0}
+                                    onChange={(e) => {
+                                        setPersent(parseInt(e.target.value));
+                                    }}
+                                    value={persent}
+                                />
+                                <div style={{ width: persent + '%' }} className="progress h-[2px] absolute bg-white rounded"></div>
                             </div>
                         </div>
                         <span className="text-white text-sm ml-2 w-16 h-[16px] text-[10px] absolute right-3 bottom-[3.2px]">

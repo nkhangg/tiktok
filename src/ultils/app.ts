@@ -46,3 +46,5 @@ export function dataURLtoFile(dataurl: string) {
     }
     return new File([u8arr], 'fileImage.png', { type: mine });
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
