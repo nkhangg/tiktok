@@ -18,19 +18,7 @@ interface InputProps {
     onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
-const Input = ({
-    type,
-    placeholder,
-    value,
-    error,
-    small,
-    checked,
-    loading,
-    onInput,
-    setValue,
-    onFocus,
-    onClick,
-}: InputProps) => {
+const Input = ({ type, placeholder, value, error, small, checked, loading, onInput, setValue, onFocus, onClick }: InputProps) => {
     const [eys, setEys] = useState(true);
     const [isType, setIsType] = useState(type);
 
@@ -58,13 +46,9 @@ const Input = ({
         <div
             className={`${
                 small
-                    ? `w-[360px] h-[38px] ${
-                          !error ? 'focus-within:border-white-opacity-2' : ''
-                      }  bg-white-opacity-06 text-16 text-white-opacity leading-6 px-3 py=[7px] rounded`
+                    ? `w-[360px] h-[38px] ${!error ? 'focus-within:border-white-opacity-2' : ''}  bg-white-opacity-06 text-16 text-white-opacity leading-6 px-3 py=[7px] rounded`
                     : normal.current
-            } ${
-                error ? 'border-error' : small ? '' : 'border-white-opacity-12'
-            } flex items-center justify-between border`}
+            } ${error ? 'border-error' : small ? '' : 'border-white-opacity-12'} flex items-center justify-between border`}
         >
             <input
                 onClick={onClick}

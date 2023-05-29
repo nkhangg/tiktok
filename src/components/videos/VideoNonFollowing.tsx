@@ -1,6 +1,6 @@
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { memo, useRef, useState, useEffect, RefObject } from 'react';
+import React, { memo, useRef, useState, useEffect, RefObject, forwardRef, ForwardedRef } from 'react';
 import { User } from '../../interface';
 import { Button } from '../button';
 import { Img } from '../image';
@@ -11,7 +11,7 @@ interface VideoNonFollowingProps {
     user: User;
 }
 
-const VideoNonFollowing = ({ image, souces, user }: VideoNonFollowingProps) => {
+const VideoNonFollowing = forwardRef(({ image, souces, user }: VideoNonFollowingProps, refs: ForwardedRef<any>) => {
     const refVideo = useRef<HTMLVideoElement>(null);
     const [isPlay, setIsPlay] = useState(false);
 
@@ -45,23 +45,11 @@ const VideoNonFollowing = ({ image, souces, user }: VideoNonFollowingProps) => {
     };
 
     return (
-        <div className="w-[226px] h-[302px] overflow-hidden rounded-md relative">
+        <div ref={refs} className="w-[226px] h-[302px] overflow-hidden rounded-md relative">
             {isPlay ? (
-                <video
-                    loop
-                    muted
-                    onMouseOutCapture={handleOutVideo}
-                    ref={refVideo}
-                    className="w-full h-full object-cover cursor-pointer"
-                    src={souces}
-                />
+                <video loop muted onMouseOutCapture={handleOutVideo} ref={refVideo} className="w-full h-full object-cover cursor-pointer" src={souces} />
             ) : (
-                <img
-                    onMouseEnter={handleInVideo}
-                    className="w-full h-full object-cover cursor-pointer"
-                    src={image}
-                    alt="bg"
-                />
+                <img onMouseEnter={handleInVideo} className="w-full h-full object-cover cursor-pointer" src={image} alt="bg" />
             )}
 
             <div
@@ -82,6 +70,6 @@ const VideoNonFollowing = ({ image, souces, user }: VideoNonFollowingProps) => {
             </div>
         </div>
     );
-};
+});
 
 export default memo(VideoNonFollowing);

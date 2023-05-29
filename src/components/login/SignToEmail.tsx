@@ -7,7 +7,7 @@ import { isEmail, passwordCheckCondition, passwordCheckLenght } from '../../ulti
 import { apiRegister } from '../../api/users';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../type';
-import { slOpenLogin, slSetLogin, slSetUser } from '../../store/action/slice/slice';
+import { slOpenLogin, slSetImageUser, slSetLogin, slSetLoginLoading, slSetToken, slSetUser } from '../../store/action/slice/slice';
 
 const SignToPhone = () => {
     const [showCondition, setShowCondition] = useState(false);
@@ -23,6 +23,8 @@ const SignToPhone = () => {
     const [password, setPassword] = useState('');
     const [code, setCode] = useState('');
     const [checked, setChecked] = useState(false);
+
+    const [error, setError] = useState(false);
 
     // state error
 
@@ -100,15 +102,30 @@ const SignToPhone = () => {
     const handleSign = async () => {
         if (!readySendocode) return;
 
-        const res = await apiRegister(email, password);
+        try {
+            dispatch(slSetLoginLoading(true));
+            const res = await apiRegister(email, password);
 
-        if (res) {
-            dispatch(slSetUser(res));
-            dispatch(slSetLogin(true));
-            dispatch(slOpenLogin());
-        } else {
-            dispatch(slSetUser(null));
-            dispatch(slSetLogin(false));
+            if (res) {
+                // show error
+                setError(false);
+
+                dispatch(slSetToken(res.meta?.token));
+                dispatch(slSetImageUser({ image: res.data.avatar, to: res.data.nickname }));
+                dispatch(slOpenLogin());
+                dispatch(slSetLogin(true));
+                dispatch(slSetLoginLoading(false));
+            } else {
+                // show error
+                setError(true);
+
+                dispatch(slSetUser(null));
+                dispatch(slSetLogin(false));
+                dispatch(slSetLoginLoading(false));
+            }
+        } catch (error) {
+            setError(true);
+            dispatch(slSetLoginLoading(false));
         }
     };
 
@@ -133,29 +150,14 @@ const SignToPhone = () => {
 
     return (
         <div onClick={handleClickOutside.bind(this)} className="flex gap-3 flex-col pb-5">
-            <Input
-                error={errorForm.errorEmail}
-                type="email"
-                placeholder="Email address"
-                value={email}
-                setValue={setEmail}
-            />
+            <Input error={errorForm.errorEmail} type="email" placeholder="Email address" value={email} setValue={setEmail} />
             {errorForm.errorEmail ? <span className="text-xs text-error">Enter a valid email address</span> : ''}
-            <Input
-                error={errorForm.errorPassword}
-                onClick={handleInput}
-                type="password"
-                placeholder="Password"
-                value={password}
-                setValue={setPassword}
-            />
+            <Input error={errorForm.errorPassword} onClick={handleInput} type="password" placeholder="Password" value={password} setValue={setPassword} />
             {showCondition ? (
                 <div className="flex flex-col gap-1">
                     <p className="text-white-opacity font-medium text-sm">Your password must have:</p>
                     <span
-                        className={`${
-                            passwordCheckLenght(password) ? 'text-sucess' : 'text-white-opacity-75'
-                        } flex items-center gap-1 text-xs text-white-opacity-75 font-medium`}
+                        className={`${passwordCheckLenght(password) ? 'text-sucess' : 'text-white-opacity-75'} flex items-center gap-1 text-xs text-white-opacity-75 font-medium`}
                     >
                         <span>
                             <FontAwesomeIcon icon={faCheck} />
@@ -176,9 +178,12 @@ const SignToPhone = () => {
             ) : (
                 ''
             )}
+
             <ButtonSendCode ready={readySendocode} value={code} setValue={setCode} />
             <CheckBox checked={checked} setChecked={setChecked} />
             <ButtonGray ready={readySendocode} onClick={handleSign} title="Next" width="100%" />
+
+            {error && <span className="text-xs text-error w-full text-center">Account already exists</span>}
         </div>
     );
 };

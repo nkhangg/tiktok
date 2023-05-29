@@ -71,10 +71,7 @@ const FollowingAccounts = () => {
                 })}
             </div>
 
-            <p
-                onClick={handleSeemore}
-                className="text-primary flex items-center mt-2 px-2 cursor-pointer text-sm font-[600] select-none"
-            >
+            <p onClick={handleSeemore} className="text-primary flex items-center mt-2 px-2 cursor-pointer text-sm font-[600] select-none">
                 {stateSeemore ? 'See more' : 'See less'}
             </p>
         </div>

@@ -8,10 +8,12 @@ interface ButtonGrayProps {
     ready?: boolean;
     className?: string;
     background?: string;
+    full?: boolean;
     onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 const ButtonGray = ({
+    full,
     width = '50%',
     title,
     cusor = 'cursor-pointer',
@@ -23,8 +25,9 @@ const ButtonGray = ({
 }: ButtonGrayProps) => {
     return (
         <button
+            style={{ width: full ? '100%' : width }}
             onClick={onClick}
-            className={`w-[${width}] h-11 px-3  rounded-sm 
+            className={`h-11 px-3  rounded-sm 
             flex items-center 
             ${background}
             ${className ? className : ''}

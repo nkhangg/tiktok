@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { apiUpdateProfile } from '../../api/users';
 import useDebounce from '../../hook/useDebounce';
 import { AvatarEdited, EditAvatar as Editinterface, ProfileInterface } from '../../interface';
-import { slOpenEdit, slSetAvatarEdited, slSetEditAvatarProfile } from '../../store/action/slice/slice';
+import { slOpenEdit, slSetAvatarEdited, slSetEditAvatarProfile, slSetUpdateProfileLoading } from '../../store/action/slice/slice';
 import { RootState } from '../../type';
 import { sleep } from '../../ultils/funtion';
 import { Button } from '../button';
@@ -37,6 +37,7 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
     const [stateUsername, setStateUsername] = useState({ loading: false, error: false, checked: false });
     const [stateBio, setStateBio] = useState({ error: false });
     const [editStateProfile, setEditStateProfile] = useState<Editinterface>(curEditAvatar);
+    const [errorFullname, setErrorFullname] = useState(false);
 
     // list state
 
@@ -103,12 +104,16 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
         }
 
         try {
-            const res = await apiUpdateProfile(
-                { bio, firstname, lastname, avatar: avatarEditedType.image ? avatarEditedType.image : undefined },
-                token,
-            );
+            dispatch(slSetUpdateProfileLoading(true));
+            setErrorFullname(false);
+
+            const res = await apiUpdateProfile({ bio, firstname, lastname, avatar: avatarEditedType.image ? avatarEditedType.image : undefined }, token);
             if (res) {
                 dispatch(slOpenEdit(false));
+                dispatch(slSetUpdateProfileLoading(false));
+
+                setErrorFullname(false);
+
                 setCurUser({
                     ...curUser,
                     ...res,
@@ -118,7 +123,8 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
                 setAvatar(res.avatar);
             }
         } catch (error) {
-            console.log(error);
+            setErrorFullname(true);
+            dispatch(slSetUpdateProfileLoading(false));
         }
     };
 
@@ -131,9 +137,7 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
             slSetAvatarEdited({
                 ...avatarEditedType,
                 state: true,
-                image: dataURLtoFile(avatarEditedType.preview as string)
-                    ? dataURLtoFile(avatarEditedType.preview as string)
-                    : null,
+                image: dataURLtoFile(avatarEditedType.preview as string) ? dataURLtoFile(avatarEditedType.preview as string) : null,
             }),
         );
         dispatch(slSetEditAvatarProfile({ state: false, image: null }));
@@ -171,16 +175,11 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
                 >
                     <div className="flex items-center gap-2">
                         {editStateProfile.state && (
-                            <span
-                                onClick={handleChageEditProfile.bind(this)}
-                                className="h-6 w-6 flex items-center justify-center text-2xl cursor-pointer"
-                            >
+                            <span onClick={handleChageEditProfile.bind(this)} className="h-6 w-6 flex items-center justify-center text-2xl cursor-pointer">
                                 <FontAwesomeIcon icon={faChevronLeft} />
                             </span>
                         )}
-                        <span className="font-medium text-2xl">
-                            {editStateProfile.state ? 'Edit photo' : 'Edit profile'}
-                        </span>
+                        <span className="font-medium text-2xl">{editStateProfile.state ? 'Edit photo' : 'Edit profile'}</span>
                     </div>
                     <span
                         onClick={handleHiddePopup.bind(this)}
@@ -192,6 +191,8 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
                 </div>
                 {!editStateProfile.state && !editStateProfile.image ? (
                     <EditProfile
+                        errorFullname={errorFullname}
+                        setErrorFullname={setErrorFullname}
                         cuUser={curUser}
                         avatar={avatar}
                         setAvatar={setAvatar}
@@ -216,12 +217,7 @@ const EditPopup = ({ curUser, setCurUser }: EditPopupProps) => {
                         <span>Cancel</span>
                     </Button>
                     {!editStateProfile.state && (
-                        <Button
-                            onClick={handleUpdate.bind(this)}
-                            primary={!handleChecking()}
-                            disable={handleChecking()}
-                            className="rounded"
-                        >
+                        <Button onClick={handleUpdate.bind(this)} primary={!handleChecking()} disable={handleChecking()} className="rounded">
                             <span>Save</span>
                         </Button>
                     )}

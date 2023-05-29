@@ -1,15 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { apiLogin } from '../../api/users';
-import {
-    slSetUser,
-    slSetTypeMode,
-    slOpenLogin,
-    slSetLogin,
-    slSetToken,
-    slSetImageUser,
-    slSetLoginLoading,
-} from '../../store/action/slice/slice';
+import { slSetUser, slSetTypeMode, slOpenLogin, slSetLogin, slSetToken, slSetImageUser, slSetLoginLoading } from '../../store/action/slice/slice';
 import { ButtonGray } from '../button';
 import { Input } from '../input';
 
@@ -23,6 +15,8 @@ const LoginToEmail = () => {
     // state value
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const [error, setError] = useState(false);
 
     // handle funtion
     const handleClickForgot = () => {
@@ -51,17 +45,27 @@ const LoginToEmail = () => {
             dispatch(slSetLoginLoading(true));
             const res = await apiLogin(email, password);
             if (res) {
+                // show error
+                setError(false);
+
                 dispatch(slSetToken(res.meta?.token));
                 dispatch(slSetImageUser({ image: res.data.avatar, to: res.data.nickname }));
                 dispatch(slOpenLogin());
                 dispatch(slSetLogin(true));
                 dispatch(slSetLoginLoading(false));
             } else {
+                // show error
+                setError(true);
+
                 dispatch(slSetUser(null));
                 dispatch(slSetLogin(false));
                 dispatch(slSetLoginLoading(false));
             }
-        } catch (error) {}
+        } catch (error) {
+            // show error
+            setError(true);
+            dispatch(slSetLoginLoading(false));
+        }
     };
 
     useEffect(() => {
@@ -70,8 +74,10 @@ const LoginToEmail = () => {
 
     return (
         <div className="flex flex-col gap-2 ">
-            <Input type="text" value={email} setValue={setEmail} placeholder="Email or username" />
-            <Input type="password" value={password} setValue={setPassword} placeholder="Password" />
+            <Input error={error} type="text" value={email} setValue={setEmail} placeholder="Email or username" />
+            <Input error={error} type="password" value={password} setValue={setPassword} placeholder="Password" />
+
+            {error && <span className="text-xs text-error w-full text-center">Usernmae or Passwrod incorect</span>}
             <div className="mb-[21px]">
                 <div className="flex items-center gap-3">
                     <span
@@ -83,7 +89,7 @@ const LoginToEmail = () => {
                     </span>
                 </div>
             </div>
-            <ButtonGray onClick={handleLogin.bind(this)} ready={readyButton} title="Log in" />
+            <ButtonGray width="100%" onClick={handleLogin.bind(this)} ready={readyButton} title="Log in" />
         </div>
     );
 };

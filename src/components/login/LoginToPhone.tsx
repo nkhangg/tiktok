@@ -51,7 +51,7 @@ const LoginToPhone = () => {
                     )}
                 </div>
             </div>
-            <ButtonGray title="Log in" />
+            <ButtonGray width="100%" title="Log in" />
         </div>
     );
 };

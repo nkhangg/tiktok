@@ -9,7 +9,6 @@ import { Video as VideoInterface } from '../../interface';
 import { secondsToMinute } from '../../ultils/funtion';
 import { Img } from '../image';
 import Interaction from './Interaction';
-import { sleep } from '../../ultils/app';
 
 interface VideoProps {
     data: VideoInterface;
@@ -115,18 +114,15 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
     //use effect
     useEffect(() => {
-        (async () => {
-            if (!ref.current) return;
+        if (!ref.current) return;
 
-            if (isVisibile) {
-                await sleep(800);
-                ref.current.play();
-                setIsPlaying(true);
-            } else {
-                ref.current.pause();
-                setIsPlaying(false);
-            }
-        })();
+        if (isVisibile) {
+            ref.current.play();
+            setIsPlaying(true);
+        } else {
+            ref.current.pause();
+            setIsPlaying(false);
+        }
     }, [isVisibile]);
 
     useEffect(() => {
@@ -188,9 +184,8 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
             </div>
 
             <div className="flex justify-start gap-6 w-full h-full items-end relative cursor-pointer select-none">
-                <div onMouseEnter={handleOver.bind(this)} onMouseLeave={handleLeave.bind(this)} className="relative">
+                <div onMouseEnter={handleOver.bind(this)} onMouseLeave={handleLeave.bind(this)} className="relative min-h-[300px]">
                     <video onTimeUpdate={handlePlaying} onEnded={handleEnded} ref={ref} className="rounded-md max-h-[600px] w-full h-full" src={file_url} />
-
                     <span
                         onClick={handlePlay.bind(this)}
                         className={`${hover ? 'opacity-100' : 'opacity-0'} text-xl h-10 w-10 flex items-center 
@@ -198,7 +193,6 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                     >
                         <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
                     </span>
-
                     <Tippy
                         interactive
                         offset={[0, 14]}
@@ -229,21 +223,11 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                             <FontAwesomeIcon icon={!isMute ? faVolumeMute : faVolumeLow} />
                         </span>
                     </Tippy>
-
                     <div
                         className={`${hover ? 'opacity-100' : 'opacity-0'} h-[16px] w-full absolute mx-3 bottom-2 transition duration-100 ease-in flex items-center 
                         overflow-hidden`}
                     >
                         <div className="w-[75%] h-full flex items-center relative">
-                            {/* <div className={`w-full left-[0%] h-[2px] bg-[rgba(255,255,255,0.34)] absolute rounded-sm transition-all ease duration-150`}>
-                                <div
-                                    style={{
-                                        width: persent + '%',
-                                    }}
-                                    className="w-0 h-full bg-white rounded-sm transition-all ease-linear duration-150"
-                                ></div>
-                            </div> */}
-
                             <div className="w-full h-full flex items-center relative">
                                 <input
                                     ref={refTimeLine}
@@ -265,7 +249,6 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                             {ref.current && secondsToMinute(ref.current?.currentTime)}/{ref.current && secondsToMinute(ref.current.duration)}
                         </span>
                     </div>
-
                     <p
                         className={`${hover ? 'opacity-100' : 'opacity-0'} absolute text-white text-[16px] right-[16px] top-6 flex items-center gap-2 font-bold
                     transition duration-100 ease-in`}

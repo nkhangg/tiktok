@@ -5,6 +5,7 @@ import loginReducer from '../action/login';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+import profileReducer from '../action/profile';
 
 const appConfig = {
     storage,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     app: persistedReducer,
     follwing: follwingReducer,
     login: loginReducer,
+    profile: profileReducer,
 });
 
 export default rootReducer;

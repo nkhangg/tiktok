@@ -94,3 +94,10 @@ export const slSetLoginLoading = (data: boolean) => {
         data,
     };
 };
+
+export const slSetUpdateProfileLoading = (data: boolean) => {
+    return {
+        type: actionType.SET_LOADING_UPDATE_PROFILE,
+        data,
+    };
+};

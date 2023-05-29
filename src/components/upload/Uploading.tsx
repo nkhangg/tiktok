@@ -20,17 +20,12 @@ const Uploading = ({ listThumnail, video }: UploadingProps) => {
             if (!refVideo.current) return;
             const res = move.current?.style;
             const location = 700 + 117;
-            if (
-                e.clientX - location < 0 ||
-                e.clientX - location > refBackground.current.offsetWidth - move.current.offsetWidth
-            )
-                return;
+            if (e.clientX - location < 0 || e.clientX - location > refBackground.current.offsetWidth - move.current.offsetWidth) return;
             const rect = refBackground.current.getBoundingClientRect();
             res.left = e.clientX - location + 'px';
             const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
             const second = Math.max(1, Math.floor(percent * refVideo.current.duration));
             setCurentTime(second);
-            console.log(move.current.getBoundingClientRect());
         };
 
         const handleMouseUp = () => {
@@ -52,9 +47,7 @@ const Uploading = ({ listThumnail, video }: UploadingProps) => {
             <div className="border border-white-opacity-12 p-[6px] rounded h-[166px] relative">
                 <div className="w-full h-full bg-white-opacity-03 rounded overflow-hidden flex border-2 border-white-opacity-12">
                     {listThumnail.map((item, index) => {
-                        return (
-                            <img key={index} className="w-[11.11111%] h-full object-cover " src={item} alt="thumnail" />
-                        );
+                        return <img key={index} className="w-[11.11111%] h-full object-cover " src={item} alt="thumnail" />;
                     })}
                 </div>
                 <div ref={refBackground} className="bg-[rgba(255,255,255,0.6)] absolute inset-0 w-full h-full ">

@@ -1,11 +1,24 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { apiGetVideos } from '../../api/videos';
 import Video from './Video';
 import { Loading } from '../loading';
+import { useDispatch } from 'react-redux';
+import { slSetScrollIntoView } from '../../store/action/slice/slice';
 
-const Videos2 = () => {
+const Videos = () => {
     const refVideos = useRef<HTMLDivElement>(null);
+
+    const dispatch = useDispatch();
+    // handle funtion
+    const handleScrollIntoViews = useCallback(() => {
+        dispatch(slSetScrollIntoView(true));
+    }, [dispatch]);
+
+    useEffect(() => {
+        handleScrollIntoViews();
+    }, [handleScrollIntoViews]);
+
     const {
         fetchNextPage, //function
         hasNextPage, // boolean
@@ -27,7 +40,6 @@ const Videos2 = () => {
 
             intObserver.current = new IntersectionObserver((posts) => {
                 if (posts[0].isIntersecting && hasNextPage) {
-                    console.log('We are near the last post!');
                     fetchNextPage();
                 }
             });
@@ -60,4 +72,4 @@ const Videos2 = () => {
     );
 };
 
-export default Videos2;
+export default Videos;

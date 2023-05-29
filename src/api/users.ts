@@ -1,14 +1,6 @@
 import axios from '../api/axios/httpBase';
 import { UpdateProps } from '../interface';
-import {
-    apiCurUserType,
-    apiGetFollowersType,
-    apiGetUsersType,
-    apiProfile,
-    apiToken,
-    apiUpdateUser,
-    apiUserType,
-} from '../type';
+import { apiCurUserType, apiGetFollowersType, apiGetUsersType, apiProfile, apiToken, apiUpdateUser, apiUserType } from '../type';
 
 export const apiGetUsers: apiGetUsersType = (page = 1, limit = 5) =>
     new Promise(async (resolve, reject) => {
@@ -48,7 +40,7 @@ export const apiGetFollowers: apiGetFollowersType = (page = 1, limit = 5, token)
         }
     });
 
-export const apiRegister: apiUserType = (email, password) =>
+export const apiRegister: apiToken = (email, password) =>
     new Promise(async (resolve, reject) => {
         try {
             const responce = await axios({
@@ -61,7 +53,7 @@ export const apiRegister: apiUserType = (email, password) =>
                 },
             });
 
-            resolve(responce.data.data);
+            resolve(responce.data);
         } catch (error) {
             reject(error);
         }

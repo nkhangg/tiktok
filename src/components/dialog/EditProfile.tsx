@@ -6,6 +6,7 @@ import { RootState } from '../../type';
 import { PenIcon } from '../../ultils/Icon';
 import { EditBox } from '../box';
 import { Input, TextArea } from '../input';
+import { Loading } from '../loading';
 
 interface EditProfileProps {
     cuUser: ProfileInterface;
@@ -15,26 +16,18 @@ interface EditProfileProps {
     bio: string;
     avatar: string;
     username: string;
+    errorFullname: boolean;
+    setErrorFullname: (value: boolean) => void;
     setAvatar: (value: string) => void;
     setName: (value: string) => void;
     setUsername: (value: string) => void;
     setBio: (value: string) => void;
 }
 
-const EditProfile = ({
-    cuUser,
-    stateUsername,
-    stateBio,
-    name,
-    username,
-    bio,
-    avatar,
-    setAvatar,
-    setName,
-    setUsername,
-    setBio,
-}: EditProfileProps) => {
+const EditProfile = ({ cuUser, stateUsername, stateBio, name, username, bio, avatar, errorFullname, setAvatar, setName, setUsername, setBio }: EditProfileProps) => {
+    // redux
     const { avatarEdited } = useSelector((state: RootState) => state.app);
+    const { loading } = useSelector((state: RootState) => state.profile);
 
     const avatarEditedType: AvatarEdited = avatarEdited;
 
@@ -80,29 +73,19 @@ const EditProfile = ({
                         value={username}
                         setValue={setUsername}
                     />
-                    {stateUsername.error ? (
-                        <span className="h-[18px] leading-[18px] text-xs mt-3 text-error">
-                            Include at least 2 characters in your username
-                        </span>
-                    ) : (
-                        ''
-                    )}
-                    <p className="text-xs text-white-opacity-75 leading-[18px] mt-4 max-w-[460px] truncate">
-                        {`${window.location.origin}/@${username}`}
-                    </p>
+                    {stateUsername.error ? <span className="h-[18px] leading-[18px] text-xs mt-3 text-error">Include at least 2 characters in your username</span> : ''}
+                    <p className="text-xs text-white-opacity-75 leading-[18px] mt-4 max-w-[460px] truncate">{`${window.location.origin}/@${username}`}</p>
                     <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">
-                        Usernames can only contain letters, numbers, underscores, and periods. Changing your username
-                        will also change your profile link.
+                        Usernames can only contain letters, numbers, underscores, and periods. Changing your username will also change your profile link.
                     </p>
                 </div>
             </EditBox>
 
             <EditBox title="Name">
                 <div>
-                    <Input small placeholder="Username" type="text" value={name} setValue={setName} />
-                    <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">
-                        Your nickname can only be changed once every 7 days.
-                    </p>
+                    <Input error={errorFullname} small placeholder="Username" type="text" value={name} setValue={setName} />
+                    <p className="text-xs w-[360px] mt-2 text-white-opacity-75 leading-[18px] max-w-[460px]">Your nickname can only be changed once every 7 days.</p>
+                    {errorFullname && <span className="text-xs text-error">Fullname incorect !</span>}
                 </div>
             </EditBox>
             <EditBox border={false} title="Bio">
@@ -113,6 +96,14 @@ const EditProfile = ({
                     </p>
                 </div>
             </EditBox>
+
+            {loading ? (
+                <div className="absolute w-full h-full bg-white-opacity-12 inset-0 flex items-center justify-center">
+                    <Loading />
+                </div>
+            ) : (
+                ''
+            )}
         </div>
     );
 };

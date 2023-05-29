@@ -1,61 +1,70 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { apiGetVideos } from '../api/videos';
 import { Loading } from '../components/loading';
 import { VideoNonFollowing } from '../components/videos';
-import { Video } from '../interface';
-import { filterDulicate } from '../ultils/app';
+import { useInfiniteQuery } from 'react-query';
+import { slSetScrollIntoView } from '../store/action/slice/slice';
+import { useDispatch } from 'react-redux';
 
 const Following = () => {
-    const [videos, setVideos] = useState<Video[]>([]);
-    const [hasmore, setHasmore] = useState(true);
+    const dispatch = useDispatch();
 
-    const fectVideos = useCallback(
-        async (page: number) => {
-            if (videos.length > 40) {
-                setHasmore(false);
-                return;
-            }
-            const responce = await apiGetVideos(page + 1);
-            if (responce) {
-                const arr = [...videos, ...responce];
-
-                const res = await filterDulicate(arr);
-
-                setVideos(res as Video[]);
-            }
-        },
-        [videos],
-    );
+    // handle funtion
+    const handleScrollIntoViews = useCallback(() => {
+        dispatch(slSetScrollIntoView(true));
+    }, [dispatch]);
 
     useEffect(() => {
-        fectVideos(0);
-    }, [fectVideos]);
+        handleScrollIntoViews();
+    }, [handleScrollIntoViews]);
+
+    const refVideos = useRef<HTMLDivElement>(null);
+    const {
+        fetchNextPage, //function
+        hasNextPage, // boolean
+        isFetchingNextPage, // boolean
+        data,
+    } = useInfiniteQuery('/videos', ({ pageParam = 1 }) => apiGetVideos(pageParam), {
+        getNextPageParam: (lastPage, allPages) => {
+            return lastPage.length ? allPages.length + 1 : undefined;
+        },
+    });
+
+    const intObserver: any = useRef();
+    const lastPostRef = useCallback(
+        (post: any) => {
+            if (isFetchingNextPage) return;
+
+            if (intObserver.current) intObserver.current.disconnect();
+
+            intObserver.current = new IntersectionObserver((posts) => {
+                if (posts[0].isIntersecting && hasNextPage) {
+                    fetchNextPage();
+                }
+            });
+
+            if (post) intObserver.current.observe(post);
+        },
+        [isFetchingNextPage, fetchNextPage, hasNextPage],
+    );
+
+    const contents = data?.pages.map((pg) => {
+        return pg.map((video, i) => {
+            if (pg.length === i + 1) {
+                return <VideoNonFollowing ref={lastPostRef} key={video.id} image={video.thumb_url} souces={video.file_url} user={video.user} />;
+            }
+            return <VideoNonFollowing ref={lastPostRef} key={video.id} image={video.thumb_url} souces={video.file_url} user={video.user} />;
+        });
+    });
 
     return (
-        <div className={`w-[720px] pt-[64px]`}>
-            <InfiniteScroll
-                dataLength={videos.length}
-                hasMore={hasmore}
-                next={hasmore ? fectVideos.bind(this, 1) : () => {}}
-                loader={
-                    <div className="flex items-center justify-center w-[720px]">
-                        <Loading />
-                    </div>
-                }
-                className={'grid grid-cols-3 gap-[18px]'}
-            >
-                {videos.map((video) => {
-                    return (
-                        <VideoNonFollowing
-                            key={video.id}
-                            image={video.thumb_url}
-                            souces={video.file_url}
-                            user={video.user}
-                        />
-                    );
-                })}
-            </InfiniteScroll>
+        <div ref={refVideos} className="pt-5">
+            <div className={'grid grid-cols-3 gap-[18px]'}> {contents}</div>
+            {isFetchingNextPage && (
+                <div className="w-[692px] h-full flex flex-col items-center justify-center">
+                    <Loading />
+                </div>
+            )}
         </div>
     );
 };

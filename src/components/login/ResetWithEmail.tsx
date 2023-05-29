@@ -12,7 +12,7 @@ const ResetWithEmail = () => {
             <ButtonSendCode value={code} setValue={setCode} />
             <Input type="password" value={password} setValue={setPassword} placeholder="Password" />
 
-            <ButtonGray className="w-full mt-[21px]" title="Log in" />
+            <ButtonGray width="100%" className="w-full mt-[21px]" title="Log in" />
         </div>
     );
 };
