@@ -203,3 +203,13 @@ export interface AvatarEdited {
     image: File | null | undefined | FormData;
     state: boolean;
 }
+
+export interface Comment {
+    id: number;
+    comment: string;
+    likes_count: number;
+    is_liked: boolean;
+    created_at: string;
+    updated_at: string;
+    user: User;
+}

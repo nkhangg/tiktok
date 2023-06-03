@@ -4,3 +4,8 @@ export { default as Interaction } from './Interaction';
 export { default as VideoNonFollowing } from './VideoNonFollowing';
 export { default as VideoUser } from './VideoUser';
 export { default as VideoUsers } from './VideoUsers';
+export { default as VideoDetailHeader } from './VideoDetailHeader';
+export { default as VideoComments } from './VideoComments';
+export { default as AddComments } from './comments/AddComments';
+export { default as Comment } from './comments/Comment';
+export { default as Comments } from './comments/Comments';

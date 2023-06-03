@@ -12,7 +12,7 @@ import { Loading } from '../components/loading';
 import { Navbar } from '../components/main';
 import { Contents } from '../components/profile';
 import { ProfileInterface } from '../interface';
-import { slOpenEdit, slSetImageUser, slSetProfileMode, slSetScrollIntoView } from '../store/action/slice/slice';
+import { slOpenEdit, slSetImageUser, slSetFullScrennMode, slSetScrollIntoView } from '../store/action/slice/slice';
 import { initUserType, RootState } from '../type';
 import { title } from '../ultils/app';
 import { linkNonImage } from '../ultils/links';
@@ -70,10 +70,10 @@ const Profile = () => {
     }, [user, nickname]);
 
     useEffect(() => {
-        dispatch(slSetProfileMode(true));
+        dispatch(slSetFullScrennMode(true));
 
         return () => {
-            dispatch(slSetProfileMode());
+            dispatch(slSetFullScrennMode());
             document.title = title.home;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,9 +106,7 @@ const Profile = () => {
 
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <h1 className="font-bold text-[32px] mb-1 leading-[38px]">
-                                        {user ? user.nickname : ''}
-                                    </h1>
+                                    <h1 className="font-bold text-[32px] mb-1 leading-[38px]">{user ? user.nickname : ''}</h1>
                                     {user?.tick && (
                                         <span
                                             className="text-[rgba(32,213,236,1)] w-[20px] h-[20px] text-[20px] flex 
@@ -118,14 +116,9 @@ const Profile = () => {
                                         </span>
                                     )}
                                 </div>
-                                <h4 className="font-medium text-[18px] leading-[25px] max-w-[450px]">{`${
-                                    user ? user.first_name + ' ' + user.last_name : ''
-                                }`}</h4>
+                                <h4 className="font-medium text-[18px] leading-[25px] max-w-[450px]">{`${user ? user.first_name + ' ' + user.last_name : ''}`}</h4>
                                 {me && me.to === user?.nickname && isLoggedIn ? (
-                                    <Button
-                                        onClick={() => dispatch(slOpenEdit(true))}
-                                        className="flex items-center justify-between px-4 mt-4 rounded-[4px] gap-2 font-bold"
-                                    >
+                                    <Button onClick={() => dispatch(slOpenEdit(true))} className="flex items-center justify-between px-4 mt-4 rounded-[4px] gap-2 font-bold">
                                         <span>
                                             <FontAwesomeIcon icon={faEdit} />
                                         </span>
@@ -150,9 +143,7 @@ const Profile = () => {
                                 <p className="font-[400] leading-[22px] text-[16px] text-white-opacity-75">Likes</p>
                             </span>
                         </div>
-                        <p className="mt-[10px] font-[400] text-16 leading-[22px] text-white-opacity">
-                            {(user && user.bio !== '') || user?.bio ? user.bio : 'No bio yet.'}
-                        </p>
+                        <p className="mt-[10px] font-[400] text-16 leading-[22px] text-white-opacity">{(user && user.bio !== '') || user?.bio ? user.bio : 'No bio yet.'}</p>
 
                         <span className="absolute top-[11px] right-[52px] cursor-pointer flex items-center gap-4">
                             <ShareButton />

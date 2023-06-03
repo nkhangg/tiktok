@@ -7,12 +7,13 @@ export interface InitStateApp {
     isOpenLogin: boolean;
     isOpenEdit: boolean;
     scrollIntView: boolean;
-    profileMode: boolean;
+    fullScreenMode: boolean;
     userProfile: User | null;
     initUser: initUserType | null;
     token: string | null;
     editAvatar: EditAvatar;
     avatarEdited: AvatarEdited;
+    hiddenHeader: boolean;
 }
 const initState: InitStateApp = {
     isLoggedIn: false,
@@ -20,10 +21,11 @@ const initState: InitStateApp = {
     isOpenLogin: false,
     isOpenEdit: false,
     scrollIntView: false,
-    profileMode: false,
+    fullScreenMode: false,
     userProfile: null,
     initUser: null,
     token: null,
+    hiddenHeader: false,
     editAvatar: { state: false, image: null },
     avatarEdited: { preview: '', image: null, state: false },
 };
@@ -38,7 +40,7 @@ const appReducer = (state: InitStateApp = initState, action: Action<string, stri
         case actionType.SET_PROFILE_MODE:
             return {
                 ...state,
-                profileMode: action.data,
+                fullScreenMode: action.data,
             };
 
         case actionType.SET_STATE_LOGIN:
@@ -99,6 +101,12 @@ const appReducer = (state: InitStateApp = initState, action: Action<string, stri
             return {
                 ...state,
                 avatarEdited: action.data,
+            };
+        }
+        case actionType.SET_HIDDEN_HEADER: {
+            return {
+                ...state,
+                hiddenHeader: action.data,
             };
         }
 

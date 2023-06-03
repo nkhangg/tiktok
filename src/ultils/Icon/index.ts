@@ -16,6 +16,7 @@ export { default as UserIcon } from './UserIcon';
 export { default as UnfolowIcon } from './UnfolowIcon';
 export { default as BlockIcon } from './BlockIcon';
 export { default as PenIcon } from './PenIcon';
+export { default as IconChat } from './IconChat';
 
 export { default as Facebook } from './social/Facebook';
 export { default as Apple } from './social/Apple';

@@ -11,7 +11,7 @@ import { FooterNav } from '../../footer';
 import NavbarItem from './NavbarItem';
 
 const Navbar = () => {
-    const { isLoggedIn, profileMode } = useSelector((state: RootState) => state.app);
+    const { isLoggedIn, fullScreenMode } = useSelector((state: RootState) => state.app);
     const dispatch = useDispatch();
 
     // handle funtion
@@ -21,7 +21,7 @@ const Navbar = () => {
     };
 
     return (
-        <div id="navbar" className={`${profileMode ? 'w-nav-profile pl-2' : 'w-nav'} fixed h-screen pt-16 pb-2`}>
+        <div id="navbar" className={`${fullScreenMode ? 'w-nav-profile pl-2' : 'w-nav'} fixed h-screen pt-16 pb-2`}>
             <Scrollbars
                 style={{
                     width: '100%',
@@ -31,28 +31,15 @@ const Navbar = () => {
             >
                 <div className="w-full flex flex-col pb-2 border-b border-gray-100 pt-5">
                     {navbar.map((item) => {
-                        return (
-                            <NavbarItem
-                                key={item.title}
-                                path={item.path}
-                                Icon={item.Icon}
-                                ActiveIcon={item.ActiveIcon}
-                                title={item.title}
-                            />
-                        );
+                        return <NavbarItem key={item.title} path={item.path} Icon={item.Icon} ActiveIcon={item.ActiveIcon} title={item.title} />;
                     })}
                 </div>
 
                 {!isLoggedIn && (
-                    <NavbarBox
-                        classNameTitle="text-[rgba(22,24,35,.5)] text-[16px]"
-                        title="Log in to follow creators, like videos, and view comments."
-                    >
+                    <NavbarBox classNameTitle="text-[rgba(22,24,35,.5)] text-[16px]" title="Log in to follow creators, like videos, and view comments.">
                         <button
                             onClick={handleOpenLogin}
-                            className={`border border-primary mt-10 ${
-                                profileMode ? 'w-[208px]' : 'w-[324px]'
-                            } h-12 ml-2 text-[18px] 
+                            className={`border border-primary mt-10 ${fullScreenMode ? 'w-[208px]' : 'w-[324px]'} h-12 ml-2 text-[18px] 
                             font-bold text-primary rounded-md hover:bg-[rgba(254,44,85,0.06)]`}
                         >
                             Login
@@ -60,7 +47,7 @@ const Navbar = () => {
                     </NavbarBox>
                 )}
 
-                {!profileMode || !isLoggedIn ? (
+                {!fullScreenMode || !isLoggedIn ? (
                     <NavbarBox title="Suggested accounts">
                         <SuggestedAcounts />
                     </NavbarBox>

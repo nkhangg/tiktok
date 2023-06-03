@@ -3,15 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Img } from '../image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 interface VideoUserProps {
+    id: number;
+    nickname: string;
     title: string;
     image: string;
     video: string;
     like: number | string;
 }
 
-const VideoUser = ({ title, image, video, like }: VideoUserProps) => {
+const VideoUser = ({ title, image, video, like, id, nickname }: VideoUserProps) => {
+    const navigate = useNavigate();
+
     const refVideo = useRef<HTMLVideoElement>(null);
     const [play, setPlay] = useState(false);
 
@@ -23,16 +28,17 @@ const VideoUser = ({ title, image, video, like }: VideoUserProps) => {
         }
     }, [play]);
 
+    const handleMoveToDetail = () => {
+        navigate(`/@${nickname}/video/${id}`);
+    };
+
     return (
         <div className="w-full h-[282px] overflow-hidden  relative flex flex-col justify-between">
-            <div
-                onMouseEnter={() => setPlay(true)}
-                onMouseLeave={() => setPlay(false)}
-                className="flex-1 w-full h-[90%] cursor-pointer relative"
-            >
+            <div onMouseEnter={() => setPlay(true)} onMouseLeave={() => setPlay(false)} className="flex-1 w-full h-[90%] cursor-pointer relative">
                 <AnimatePresence>
                     {play ? (
                         <motion.video
+                            onClick={handleMoveToDetail.bind(this)}
                             initial={{
                                 opacity: 0,
                             }}
@@ -62,9 +68,7 @@ const VideoUser = ({ title, image, video, like }: VideoUserProps) => {
                     <span className="text-16 font-bold">{like}</span>
                 </div>
             </div>
-            <span className="text-lg font-[400]  h-[10%] text-white-opacity-75 flex items-center justify-start">
-                {title.length >= 18 ? title.slice(0, 18) + '...' : title}
-            </span>
+            <span className="text-lg font-[400]  h-[10%] text-white-opacity-75 flex items-center justify-start">{title.length >= 18 ? title.slice(0, 18) + '...' : title}</span>
         </div>
     );
 };

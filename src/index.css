@@ -197,6 +197,11 @@ body::-webkit-scrollbar-thumb {
     transition: all 0.2s;
 }
 
+.input-range.large::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+}
+
 .input-range.input-video::-webkit-slider-thumb {
     width: 0;
     height: 0;
@@ -207,4 +212,17 @@ progress:hover::-webkit-slider-thumb {
     width: 12px;
     height: 12px;
     cursor: pointer;
+}
+
+.line-find::after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 60%;
+    background-color: #fff;
+    left: 0;
+}
+
+.comment-item:hover .hover-icon {
+    opacity: 1;
 }

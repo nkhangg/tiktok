@@ -2,13 +2,14 @@ import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faPause, faPlay, faVolumeLow, faVolumeMute, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react/headless';
-import React, { useEffect, useRef, useState, forwardRef, ForwardedRef, memo, RefObject } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState, forwardRef, ForwardedRef, memo, RefObject, MouseEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useElementOnScreen from '../../hook/useElementOnScreen';
 import { Video as VideoInterface } from '../../interface';
 import { secondsToMinute } from '../../ultils/funtion';
 import { Img } from '../image';
 import Interaction from './Interaction';
+import { Loading } from '../loading';
 
 interface VideoProps {
     data: VideoInterface;
@@ -23,7 +24,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     const navigate = useNavigate();
 
     // variable
-    const { file_url, description, likes_count, comments_count, shares_count, user } = data;
+    const { id, file_url, description, likes_count, comments_count, shares_count, user } = data;
 
     // use state
     const [isFollow, setIsFollow] = useState(user.is_followed);
@@ -33,6 +34,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     const [persent, setPersent] = useState(0);
 
     const [progress, setProgress] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     // handle funtion
     const handleFollow = () => {
@@ -47,7 +49,8 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
         setHover(true);
     };
 
-    const handlePlay = () => {
+    const handlePlay = (e: MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
         if (!ref.current) return;
         setIsPlaying((prev) => !prev);
         if (isPlaying) {
@@ -103,7 +106,6 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     };
 
     // hook custom
-
     const options = {
         root: null,
         rootMargin: '100px',
@@ -185,7 +187,24 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
 
             <div className="flex justify-start gap-6 w-full h-full items-end relative cursor-pointer select-none">
                 <div onMouseEnter={handleOver.bind(this)} onMouseLeave={handleLeave.bind(this)} className="relative min-h-[300px]">
-                    <video onTimeUpdate={handlePlaying} onEnded={handleEnded} ref={ref} className="rounded-md max-h-[600px] w-full h-full" src={file_url} />
+                    {isLoading && (
+                        <div className="absolute flex items-center justify-center top-0 w-full h-full z-50">
+                            <Loading />
+                        </div>
+                    )}
+
+                    <Link to={`/@${user.nickname}/video/${id}`}>
+                        <video
+                            onLoadedData={() => {
+                                setIsLoading(false);
+                            }}
+                            onTimeUpdate={handlePlaying}
+                            onEnded={handleEnded}
+                            ref={ref}
+                            className="rounded-md max-h-[600px] w-full h-full"
+                            src={file_url}
+                        />
+                    </Link>
                     <span
                         onClick={handlePlay.bind(this)}
                         className={`${hover ? 'opacity-100' : 'opacity-0'} text-xl h-10 w-10 flex items-center 

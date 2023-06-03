@@ -1,16 +1,7 @@
 import reduxStore from '../store/redux';
 import React, { ForwardRefExoticComponent } from 'react';
 import { LinkProps } from 'react-router-dom';
-import {
-    ProfileInterface,
-    ResponceAccount,
-    ResponceAccountFull,
-    ResponceCheckingUsername,
-    ResponceUser,
-    UpdateProps,
-    User,
-    Video,
-} from '../interface';
+import { Comment, ProfileInterface, ResponceAccount, ResponceAccountFull, ResponceCheckingUsername, ResponceUser, UpdateProps, User, Video } from '../interface';
 import { AnyAction } from 'redux';
 
 const { store } = reduxStore();
@@ -30,4 +21,7 @@ export type SetCurUser = (token: string) => Promise<AnyAction>;
 export type apiToken = (email: string, password: string) => Promise<ResponceUser>;
 export type AppDispatch = typeof store.dispatch;
 export type apiGetVideo = (page?: number, option?: {}) => Promise<Video[]>;
+export type apiGetAVideo = (id: number | string | undefined) => Promise<Video>;
+export type apiGetComments = (id: number | string | undefined) => Promise<Comment[]>;
 export type initUserType = { image: string; to: string };
+export type setVolumeType = () => boolean;

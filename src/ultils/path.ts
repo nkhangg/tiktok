@@ -5,4 +5,5 @@ export const path = {
     LIVE: '/live',
     FOLLOWING: '/following',
     UPLOAD: '/upload',
+    DETAIL: '/:nickname/video/:id',
 };

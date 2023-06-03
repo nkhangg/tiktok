@@ -34,6 +34,7 @@ module.exports = {
                 'white-opacity-12': 'rgba(22,24,35,.12)',
                 'white-opacity-2': 'rgba(22,24,35,.2)',
                 'white-opacity-06': 'rgba(22,24,35,.06)',
+                'white-opacity-08': 'rgba(22,24,35,.08)',
                 'white-opacity-03': 'rgba(22,24,35,.03)',
                 'white-opacity': 'rgb(22, 24, 35)',
                 'white-upload': 'rgb(248, 248, 248)',

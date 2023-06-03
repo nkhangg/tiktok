@@ -7,11 +7,11 @@ import { footerNav } from '../../ultils/navbar';
 import { Img } from '../image';
 
 const FooterNav = () => {
-    const { profileMode } = useSelector((state: RootState) => state.app);
+    const { fullScreenMode } = useSelector((state: RootState) => state.app);
 
     return (
         <div className="pt-4 pl-2 text-[rgba(22,24,35,.5)]">
-            {!profileMode && (
+            {!fullScreenMode && (
                 <div className="h-[52px] w-full rounded-lg overflow-hidden cursor-pointer relative mb-[30px]">
                     <Img src={linkImageEffect} alt="effect" className="w-full h-full object-cover " />
                     <div

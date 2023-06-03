@@ -9,8 +9,8 @@ import { ButtonGray, ButtonOptions, CheckBox, Toggle } from '../components/butto
 import { MainFooter } from '../components/footer';
 import { InputUpload } from '../components/input';
 import { NonUpload, Uploading } from '../components/upload';
-import { slSetProfileMode } from '../store/action/slice/slice';
 import { title } from '../ultils/app';
+import { slSetFullScrennMode } from '../store/action/slice/slice';
 
 const UploadVideo = () => {
     // redux
@@ -58,11 +58,11 @@ const UploadVideo = () => {
     }, [videoLink]);
 
     useEffect(() => {
-        dispatch(slSetProfileMode(true));
+        dispatch(slSetFullScrennMode(true));
         document.title = title.upload;
 
         return () => {
-            dispatch(slSetProfileMode(false));
+            dispatch(slSetFullScrennMode(false));
             document.title = title.home;
         };
     }, [dispatch]);
@@ -79,9 +79,7 @@ const UploadVideo = () => {
             <div className="w-[1100px] h-[1025px] bg-white rounded-lg shadow-lg py-6 px-10">
                 <div className="">
                     <h1 className="text-[22px] font-bold leading-[2.3rem]">Upload video</h1>
-                    <span className="leading-[2.3rem] text-[17px] font-[400] text-white-opacity-50 mt-[2px]">
-                        Post a video to your account
-                    </span>
+                    <span className="leading-[2.3rem] text-[17px] font-[400] text-white-opacity-50 mt-[2px]">Post a video to your account</span>
                 </div>
                 <div className="mt-6 mb-[130px] flex">
                     <div className="w-[260px] mt-6 h-[458px] rounded-lg border-2 border-dashed border-[rgba(22,24,35,0.2)] relative">
@@ -95,20 +93,12 @@ const UploadVideo = () => {
                                 <FontAwesomeIcon icon={faCloudArrowUp} />
                             </span>
                             <span className="text-lg font-semibold leading-10">Select video to upload</span>
-                            <span className="text-sm  text-white-opacity-75 font-medium mt-1 mb-6">
-                                Or drag and drop a file
-                            </span>
+                            <span className="text-sm  text-white-opacity-75 font-medium mt-1 mb-6">Or drag and drop a file</span>
                             <div className="flex items-center flex-col justify-center text-center">
                                 <span className="text-sm font-[400]  text-white-opacity-50 mb-[6px]">MP4 or WebM</span>
-                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">
-                                    720x1280 resolution or higher
-                                </span>
-                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">
-                                    Up to 30 minutes
-                                </span>
-                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">
-                                    Less than 2 GB
-                                </span>
+                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">720x1280 resolution or higher</span>
+                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">Up to 30 minutes</span>
+                                <span className="text-sm font-[400] text-white-opacity-50 mb-[6px]">Less than 2 GB</span>
                             </div>
 
                             <Button maxWidth={false} className="mt-8 w-full" primary>
@@ -127,8 +117,7 @@ const UploadVideo = () => {
                                 <div>
                                     <span className="font-semibold text-16 leading-6">Divide videos and edit</span>
                                     <p className="text-white-opacity-75 text-sm leading-[22px]">
-                                        You can quickly divide videos into multiple parts, remove redundant parts and
-                                        turn landscape videos into portrait videos
+                                        You can quickly divide videos into multiple parts, remove redundant parts and turn landscape videos into portrait videos
                                     </p>
                                 </div>
                             </div>
@@ -169,32 +158,11 @@ const UploadVideo = () => {
                         <div className="leading-6"></div>
                         <InfoBox title="Allow users to:">
                             <div className="flex items-center w-[300px] gap-4">
-                                <CheckBox
-                                    classCheckIcon="text-[12px]"
-                                    size={16}
-                                    classNameTitle="text-16 font-[500]"
-                                    title="Conment"
-                                    checked={conment}
-                                    setChecked={setConment}
-                                />
+                                <CheckBox classCheckIcon="text-[12px]" size={16} classNameTitle="text-16 font-[500]" title="Conment" checked={conment} setChecked={setConment} />
 
-                                <CheckBox
-                                    classCheckIcon="text-[12px]"
-                                    size={16}
-                                    classNameTitle="text-16 font-[500]"
-                                    title="Duet"
-                                    checked={duet}
-                                    setChecked={setDuet}
-                                />
+                                <CheckBox classCheckIcon="text-[12px]" size={16} classNameTitle="text-16 font-[500]" title="Duet" checked={duet} setChecked={setDuet} />
 
-                                <CheckBox
-                                    classCheckIcon="text-[12px]"
-                                    size={16}
-                                    classNameTitle="text-16 font-[500]"
-                                    title="Stitch"
-                                    checked={stitch}
-                                    setChecked={setStitch}
-                                />
+                                <CheckBox classCheckIcon="text-[12px]" size={16} classNameTitle="text-16 font-[500]" title="Stitch" checked={stitch} setChecked={setStitch} />
                             </div>
                         </InfoBox>
 

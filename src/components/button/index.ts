@@ -12,3 +12,6 @@ export { default as ButtonOptionProfile } from './ButtonOptionProfile';
 export { default as TogleFollowButton } from './TogleFollowButton';
 export { default as ButtonOptions } from './ButtonOptions';
 export { default as Toggle } from './Toggle';
+export { default as ButtonVideoDetail } from './ButtonVideoDetail';
+export { default as ButtonIconDetailVideo } from './ButtonIconDetailVideo';
+export { default as ButtonTotip } from './ButtonTotip';

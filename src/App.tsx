@@ -7,7 +7,7 @@ import { RootState } from './type';
 
 const App = () => {
     //redux
-    const { darkMode } = useSelector((state: RootState) => state.app);
+    const { darkMode, hiddenHeader } = useSelector((state: RootState) => state.app);
 
     useEffect(() => {
         const body = document.querySelector('#root');
@@ -21,7 +21,7 @@ const App = () => {
     }, [darkMode]);
     return (
         <>
-            <Header />
+            {!hiddenHeader ? <Header /> : ''}
             <Main />
         </>
     );

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { path } from '../ultils/path';
-import { Following, Home, Profile, UploadVideo } from '.';
+import { Following, Home, Profile, UploadVideo, VideoDetail } from '.';
+import { Notifycation } from '../components/notyfication';
 import Live from './Live';
 import { LoginPopup } from '../components/dialog';
 import { Videos } from '../components/videos';
@@ -9,10 +10,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../type';
 
 const Main = () => {
-    const { profileMode, isLoggedIn } = useSelector((state: RootState) => state.app);
+    const { fullScreenMode, isLoggedIn } = useSelector((state: RootState) => state.app);
 
     return (
-        <div className={`${profileMode ? 'w-full' : 'w-[1150px]'}   m-auto `}>
+        <div className={`${fullScreenMode ? 'w-full' : 'w-[1150px]'}   m-auto `}>
+            <Notifycation />
+
             <Routes>
                 <Route path={path.HOME} element={<Home />}>
                     <Route path={path.HOME} element={<Videos />} />
@@ -21,6 +24,7 @@ const Main = () => {
                 <Route path={path.LIVE} element={<Live />} />
                 <Route path={path.PROFILE} element={<Profile />} />
                 <Route path={path.UPLOAD} element={<UploadVideo />} />
+                <Route path={path.DETAIL} element={<VideoDetail />} />
             </Routes>
             <LoginPopup />
         </div>

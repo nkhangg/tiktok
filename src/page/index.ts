@@ -4,3 +4,4 @@ export { default as Main } from './Main';
 export { default as Following } from './Following';
 export { default as Profile } from './Profile';
 export { default as UploadVideo } from './UploadVideo';
+export { default as VideoDetail } from './VideoDetail';

@@ -14,6 +14,8 @@ const VideoUsers = ({ listVideo }: VideoUsersProps) => {
                     return (
                         <VideoUser
                             key={item.id}
+                            id={item.id}
+                            nickname={item.user.nickname}
                             title={item.description}
                             image={item.thumb_url}
                             video={item.file_url}

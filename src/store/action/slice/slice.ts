@@ -14,7 +14,7 @@ export const slSetDarkMode = (flag: boolean) => {
     return { type: actionType.SET_DARK_MODE, data: flag };
 };
 
-export const slSetProfileMode = (flag: boolean = false) => {
+export const slSetFullScrennMode = (flag: boolean = false) => {
     return { type: actionType.SET_PROFILE_MODE, data: flag };
 };
 
@@ -98,6 +98,20 @@ export const slSetLoginLoading = (data: boolean) => {
 export const slSetUpdateProfileLoading = (data: boolean) => {
     return {
         type: actionType.SET_LOADING_UPDATE_PROFILE,
+        data,
+    };
+};
+
+export const slSetHiddenHeader = (data: boolean) => {
+    return {
+        type: actionType.SET_HIDDEN_HEADER,
+        data,
+    };
+};
+
+export const slSetShowNoty = (data: { isShow: boolean; content: string }) => {
+    return {
+        type: actionType.SET_SHOW_NOTY,
         data,
     };
 };
