@@ -14,6 +14,7 @@ export interface InitStateApp {
     editAvatar: EditAvatar;
     avatarEdited: AvatarEdited;
     hiddenHeader: boolean;
+    reloadComments: boolean;
 }
 const initState: InitStateApp = {
     isLoggedIn: false,
@@ -26,6 +27,7 @@ const initState: InitStateApp = {
     initUser: null,
     token: null,
     hiddenHeader: false,
+    reloadComments: false,
     editAvatar: { state: false, image: null },
     avatarEdited: { preview: '', image: null, state: false },
 };
@@ -107,6 +109,12 @@ const appReducer = (state: InitStateApp = initState, action: Action<string, stri
             return {
                 ...state,
                 hiddenHeader: action.data,
+            };
+        }
+        case actionType.SET_RELOAD_COMMETNS: {
+            return {
+                ...state,
+                reloadComments: action.data,
             };
         }
 

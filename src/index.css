@@ -9,18 +9,21 @@ body {
     overflow: overlay;
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar,
+#box-comments::-webkit-scrollbar {
     width: 10px;
 }
 
 /* Track */
-body::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track,
+#box-comments::-webkit-scrollbar-track {
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0);
 }
 
 /* Handle */
-body::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb,
+#box-comments::-webkit-scrollbar-thumb {
     background-color: rgba(22, 24, 35, 0.06);
 
     border-radius: 10px;

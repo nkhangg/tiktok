@@ -108,6 +108,12 @@ export const slSetHiddenHeader = (data: boolean) => {
         data,
     };
 };
+export const slSetReloadComments = (data: boolean) => {
+    return {
+        type: actionType.SET_RELOAD_COMMETNS,
+        data,
+    };
+};
 
 export const slSetShowNoty = (data: { isShow: boolean; content: string }) => {
     return {

@@ -10,6 +10,9 @@ import { secondsToMinute } from '../../ultils/funtion';
 import { Img } from '../image';
 import Interaction from './Interaction';
 import { Loading } from '../loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../type';
+import { slOpenLogin } from '../../store/action/slice/slice';
 
 interface VideoProps {
     data: VideoInterface;
@@ -23,8 +26,13 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     const refProgress: RefObject<HTMLDivElement> = useRef(null);
     const navigate = useNavigate();
 
+    // redux
+
+    const { isLoggedIn } = useSelector((state: RootState) => state.app);
+    const dispatch = useDispatch();
+
     // variable
-    const { id, file_url, description, likes_count, comments_count, shares_count, user } = data;
+    const { id, file_url, description, user } = data;
 
     // use state
     const [isFollow, setIsFollow] = useState(user.is_followed);
@@ -105,6 +113,12 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
         setPersent(second);
     };
 
+    const handleNavigate = (e: MouseEvent<HTMLElement>) => {
+        if (!isLoggedIn) {
+            dispatch(slOpenLogin(true));
+        }
+    };
+
     // hook custom
     const options = {
         root: null,
@@ -145,7 +159,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
     }, [progress]);
 
     return (
-        <div ref={refs} className="py-5 max-w-[692px] border-b border-gray-200 snap-center">
+        <div ref={refs} className="py-5 lg:max-w-[692px] md:max-w-[592px] border-b border-gray-200 snap-center">
             <div className="flex items-center justify-between gap-7 mb-3">
                 <div className="flex items-center">
                     <Img src={user.avatar} alt="avartar" className="h-14 w-14 rounded-full object-cover cursor-pointer" />
@@ -193,7 +207,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                         </div>
                     )}
 
-                    <Link to={`/@${user.nickname}/video/${id}`}>
+                    <Link onClick={handleNavigate.bind(this)} to={isLoggedIn ? `/@${user.nickname}/video/${id}` : ''}>
                         <video
                             onLoadedData={() => {
                                 setIsLoading(false);
@@ -201,7 +215,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                             onTimeUpdate={handlePlaying}
                             onEnded={handleEnded}
                             ref={ref}
-                            className="rounded-md max-h-[600px] w-full h-full"
+                            className="rounded-md lg:max-h-[600px] md:max-h-[518px] w-full h-full"
                             src={file_url}
                         />
                     </Link>
@@ -278,7 +292,7 @@ const Video = forwardRef(({ data }: VideoProps, refs: ForwardedRef<any>) => {
                         <span>Report</span>
                     </p>
                 </div>
-                <Interaction like={likes_count} coments={comments_count} shares={shares_count} />
+                <Interaction like={data.likes_count} coments={data.comments_count} shares={data.shares_count} />
             </div>
         </div>
     );

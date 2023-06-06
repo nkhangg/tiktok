@@ -1,16 +1,5 @@
 import { Settings } from '../interface';
-import {
-    faEarthAsia,
-    faCircleQuestion,
-    faKeyboard,
-    faToggleOn,
-    faToggleOff,
-    faMoon,
-    faCoins,
-    faGear,
-    faSignOut,
-    faLock,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEarthAsia, faCircleQuestion, faKeyboard, faToggleOn, faToggleOff, faMoon, faCoins, faGear, faSignOut, faLock } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 
 export const settings: Settings[] = [

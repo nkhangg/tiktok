@@ -1,17 +1,17 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect, SetStateAction } from 'react';
 import { InfoBox } from '../box';
 
 interface UploadingProps {
     listThumnail: string[];
     video: string;
+    curentTime: number;
+    setCurentTime: (value: SetStateAction<number>) => void;
 }
 
-const Uploading = ({ listThumnail, video }: UploadingProps) => {
+const Uploading = ({ listThumnail, video, curentTime, setCurentTime }: UploadingProps) => {
     const refVideo = useRef<HTMLVideoElement>(null);
     const refBackground = useRef<HTMLDivElement>(null);
     const move = useRef<HTMLDivElement>(null);
-
-    const [curentTime, setCurentTime] = useState(0);
 
     const handleMouseDown = () => {
         const handleMouseMove = (e: globalThis.MouseEvent) => {

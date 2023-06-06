@@ -8,7 +8,7 @@ interface VideoUsersProps {
 
 const VideoUsers = ({ listVideo }: VideoUsersProps) => {
     return (
-        <div className="w-full grid grid-cols-8 gap-x-4 gap-y-6">
+        <div className="w-full grid lg:grid-cols-8 grid-cols-4 gap-x-4 gap-y-6">
             {listVideo &&
                 listVideo.map((item) => {
                     return (

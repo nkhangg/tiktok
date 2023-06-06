@@ -18,11 +18,11 @@ const Home = () => {
         }
     }, [scrollIntView, dispatch]);
     return (
-        <div className="flex justify-between">
+        <div className="flex">
             <div className="w-[356px] h-screen ml-2 relative">
                 <Navbar />
             </div>
-            <div ref={refDiv} className="max-w-[720px] pt-16">
+            <div ref={refDiv} className="flex-1 pt-16 flex justify-center">
                 <Outlet />
                 <ButtonGetApp />
             </div>

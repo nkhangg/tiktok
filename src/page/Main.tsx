@@ -9,11 +9,13 @@ import { Videos } from '../components/videos';
 import { useSelector } from 'react-redux';
 import { RootState } from '../type';
 
+// className={`${fullScreenMode ? 'w-full' : 'w-[1150px]'}   m-auto `}
+
 const Main = () => {
-    const { fullScreenMode, isLoggedIn } = useSelector((state: RootState) => state.app);
+    const { isLoggedIn } = useSelector((state: RootState) => state.app);
 
     return (
-        <div className={`${fullScreenMode ? 'w-full' : 'w-[1150px]'}   m-auto `}>
+        <div className="w-full">
             <Notifycation />
 
             <Routes>

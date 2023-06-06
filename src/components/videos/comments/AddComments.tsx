@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { IconChat } from '../../../ultils/Icon';
 import Tippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
+import { apiAddComment } from '../../../api/videos';
+import { Video } from '../../../interface';
+import { useDispatch } from 'react-redux';
+import { slSetReloadComments, slSetShowNoty } from '../../../store/action/slice/slice';
 
-const AddComments = () => {
+interface AddCommentsProps {
+    data: Video | undefined;
+}
+
+const AddComments = ({ data }: AddCommentsProps) => {
     const [comments, setComments] = useState('');
     const [isHideEmoji, setIsHideEmoji] = useState(false);
+
+    const dispath = useDispatch();
 
     const handleControllEmoji = () => {
         setIsHideEmoji((prev) => !prev);
@@ -15,6 +25,25 @@ const AddComments = () => {
 
     const handleEmoji = (emoji: EmojiClickData, event: MouseEvent) => {
         setComments((prev) => prev + emoji.emoji);
+    };
+
+    const handleAddComments = async () => {
+        if (comments === '') {
+            return;
+        }
+
+        try {
+            const res = await apiAddComment(data?.id, comments);
+            if (res) {
+                setComments('');
+                dispath(slSetReloadComments(true));
+                return;
+            }
+
+            dispath(slSetShowNoty({ isShow: true, content: 'Have a error when comment !' }));
+        } catch (error) {
+            console.log('erro in addComments: ' + error);
+        }
     };
 
     return (
@@ -55,6 +84,7 @@ const AddComments = () => {
                 style={{
                     color: comments === '' ? 'rgba(22, 24, 35, 0.34)' : '',
                 }}
+                onClick={handleAddComments.bind(this)}
                 className="text-primary font-semibold ml-[4%] cursor-pointer select-none"
             >
                 Post
@@ -63,4 +93,4 @@ const AddComments = () => {
     );
 };
 
-export default AddComments;
+export default memo(AddComments);

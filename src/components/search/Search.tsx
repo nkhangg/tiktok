@@ -76,10 +76,8 @@ const Search = () => {
     return (
         <form
             onSubmit={(e) => e.preventDefault()}
-            className={`w-[361px] h-[46px] ${
-                darkMode
-                    ? 'bg-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.4)]'
-                    : 'bg-[#f1f1f2] text-[#a7a7ab] focus-within:border-gray-400'
+            className={`lg:w-[500px] h-[46px] md:w-[361px] mx-2 ${
+                darkMode ? 'bg-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.4)]' : 'bg-[#f1f1f2] text-[#a7a7ab] focus-within:border-gray-400'
             } rounded-full flex justify-between items-center 
             px-4 pr-0 font-[400] overflow-hidden border border-transparent `}
         >
@@ -118,14 +116,13 @@ const Search = () => {
                     </div>
                 </Tippy>
             </>
-            <span
-                className={`${darkMode ? 'bg-[rgba(255,255,255,0.4)]' : 'bg-gray-300'} h-[60%] w-[1px] mr-[1px]`}
-            ></span>
             <button
                 type="submit"
                 className="w-[52px] h-full text-[20px] 
-                flex items-center justify-center hover:bg-[#eaeaeb]"
+                flex items-center justify-center hover:bg-[#eaeaeb] relative"
             >
+                <span className={`${darkMode ? 'bg-[rgba(255,255,255,0.4)]' : 'bg-gray-300'} h-[60%] w-[1px] mr-[1px] absolute left-0`}></span>
+
                 <FontAwesomeIcon size="1x" icon={faMagnifyingGlass} />
             </button>
         </form>

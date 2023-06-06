@@ -4,6 +4,9 @@ import { Img } from '../image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../type';
+import { slOpenLogin } from '../../store/action/slice/slice';
 
 interface VideoUserProps {
     id: number;
@@ -20,6 +23,11 @@ const VideoUser = ({ title, image, video, like, id, nickname }: VideoUserProps) 
     const refVideo = useRef<HTMLVideoElement>(null);
     const [play, setPlay] = useState(false);
 
+    // redux
+    const { isLoggedIn } = useSelector((state: RootState) => state.app);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (play) {
             refVideo.current?.play();
@@ -29,6 +37,10 @@ const VideoUser = ({ title, image, video, like, id, nickname }: VideoUserProps) 
     }, [play]);
 
     const handleMoveToDetail = () => {
+        if (!isLoggedIn) {
+            dispatch(slOpenLogin(true));
+            return;
+        }
         navigate(`/@${nickname}/video/${id}`);
     };
 
@@ -68,7 +80,9 @@ const VideoUser = ({ title, image, video, like, id, nickname }: VideoUserProps) 
                     <span className="text-16 font-bold">{like}</span>
                 </div>
             </div>
-            <span className="text-lg font-[400]  h-[10%] text-white-opacity-75 flex items-center justify-start">{title.length >= 18 ? title.slice(0, 18) + '...' : title}</span>
+            <span className="lg:text-lg font-[400] h-[10%] text-white-opacity-75 md:text-sm flex items-center justify-start">
+                {title.length >= 18 ? title.slice(0, 18) + '...' : title}
+            </span>
         </div>
     );
 };

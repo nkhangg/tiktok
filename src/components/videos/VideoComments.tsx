@@ -24,8 +24,6 @@ const VideoComments = ({ data }: VideoCommentsProps) => {
 
     // handel funtion
 
-    console.log(123);
-
     useEffect(() => {
         if (isCoppy) {
             dispatch(slSetShowNoty({ isShow: true, content: 'Copied !' }));
@@ -38,7 +36,7 @@ const VideoComments = ({ data }: VideoCommentsProps) => {
             <div className="pt-8 px-8 pb-1">
                 <div className="pt-[22px] flex items-center justify-between mb-[15px]">
                     <div className="flex items-center">
-                        <img className="w-10 h-10 object-cover mr-3 rounded-full" src={data?.user.avatar} alt="avatar" />
+                        <img loading="lazy" className="w-10 h-10 object-cover mr-3 rounded-full" src={data?.user.avatar} alt="avatar" />
                         <div className="">
                             <h2>
                                 <Link to={`/@${data?.user.nickname}`} className="font-bold text-lg hover:underline cursor-pointer">
@@ -91,7 +89,7 @@ const VideoComments = ({ data }: VideoCommentsProps) => {
                             <ButtonIconDetailVideo title={data?.comments_count}>
                                 <FontAwesomeIcon icon={faCommentDots} />
                             </ButtonIconDetailVideo>
-                            <ButtonIconDetailVideo title={data?.comments_count}>
+                            <ButtonIconDetailVideo title={data?.shares_count}>
                                 <FontAwesomeIcon icon={faBookmark} />
                             </ButtonIconDetailVideo>
                         </div>
@@ -117,7 +115,7 @@ const VideoComments = ({ data }: VideoCommentsProps) => {
                 </div>
             </div>
             <Comments data={data} />
-            <AddComments />
+            <AddComments data={data} />
         </div>
     );
 };

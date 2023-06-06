@@ -16,6 +16,7 @@ export interface Settings {
     code?: string;
     btnDark?: IconDefinition;
     btnWhite?: IconDefinition;
+    jsxIcon?: JSX.Element;
     children?: Settings[];
     to?: string;
     separate?: boolean;
@@ -191,6 +192,14 @@ export interface UpdateProps {
     lastname: string;
     avatar?: File | FormData;
     bio: string;
+}
+
+export interface PostVideoProps {
+    description: string;
+    upload_file: File | FormData;
+    thumbnail_time: string | number;
+    viewable: string;
+    allows: string[];
 }
 
 export interface EditAvatar {
