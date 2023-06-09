@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { ButtonGetApp } from '../components/button';
-import { Navbar } from '../components/main';
+import { MinNavbar, Navbar } from '../components/main';
 import { slSetScrollIntoView } from '../store/action/slice/slice';
 import { RootState } from '../type';
 
@@ -19,8 +19,9 @@ const Home = () => {
     }, [scrollIntView, dispatch]);
     return (
         <div className="flex">
-            <div className="w-[356px] h-screen ml-2 relative">
+            <div className="lg:w-[356px] md:w-[72px] h-screen ml-2 relative">
                 <Navbar />
+                <MinNavbar />
             </div>
             <div ref={refDiv} className="flex-1 pt-16 flex justify-center">
                 <Outlet />

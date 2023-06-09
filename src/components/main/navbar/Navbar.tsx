@@ -21,7 +21,7 @@ const Navbar = () => {
     };
 
     return (
-        <div id="navbar" className={`${fullScreenMode ? 'w-nav-profile pl-2' : 'w-nav'} fixed h-screen pt-16 pb-2`}>
+        <div id="navbar" className={`${fullScreenMode ? 'w-nav-profile pl-2' : 'w-nav'} lg:fixed lg:block h-screen pt-16 pb-2 md:hidden`}>
             <Scrollbars
                 style={{
                     width: '100%',

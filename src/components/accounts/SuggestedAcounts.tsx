@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { apiGetUsers } from '../../api/users';
 import { ResponceAccount } from '../../interface';
 import SuggestedAcount from './SuggestedAcount';
+import MinSuggestedAcount from './MinSuggestedAcount';
 
 const SuggestedAcounts = () => {
     // use state
@@ -37,7 +38,7 @@ const SuggestedAcounts = () => {
 
     return (
         <div className="">
-            <div>
+            <div className="lg:block md:hidden">
                 {listUsers?.map((item) => {
                     return (
                         <SuggestedAcount
@@ -54,11 +55,25 @@ const SuggestedAcounts = () => {
                     );
                 })}
             </div>
+            <div className="md:block lg:hidden">
+                {listUsers?.map((item) => {
+                    return (
+                        <MinSuggestedAcount
+                            key={item.id}
+                            image={item.avatar}
+                            tick={item.tick}
+                            nickname={item.nickname}
+                            likeCount={item.likes_count}
+                            follwers={item.followers_count}
+                            firstname={item.first_name}
+                            lastname={item.last_name}
+                            isFollow={item.is_followed}
+                        />
+                    );
+                })}
+            </div>
 
-            <p
-                onClick={handleSeemore}
-                className="text-primary flex items-center mt-2 px-2 cursor-pointer text-sm font-[600] select-none"
-            >
+            <p onClick={handleSeemore} className="lg:block md:hidden text-primary flex items-center mt-2 px-2 cursor-pointer text-sm font-[600] select-none">
                 {stateSeemore ? 'See more' : 'See less'}
             </p>
         </div>
